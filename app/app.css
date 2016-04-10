@@ -1,0 +1,66 @@
+/* app css stylesheet */
+body {
+  background: #e7e7e7;
+}
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+#wrapper {
+  background: #e7e7e7;
+}
+
+#page-wrapper {
+  background: white;
+}
+
+#page-footer {
+  border: 1px solid #e7e7e7;
+  min-height: 50px;
+}
+
+.custom_container {
+  margin: 0 auto;
+  width: 100% !important;
+  min-height: 800px;
+  /*border-bottom: 1px solid red;*/
+  padding: 5px 5px 5px 5px;
+}
+
+.view_title {
+  border-bottom: 1px solid #d6d6c2;
+  padding-bottom: 10px;
+}
+
+.table_wrapper {
+  border: 0px solid red; 
+  height: 100%; 
+  padding: 30px 10px 5px 20px;
+  width: 100%;
+}

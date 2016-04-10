@@ -1,0 +1,17 @@
+{
+  "name": "angular-seed",
+  "description": "A starter project for AngularJS",
+  "version": "0.0.0",
+  "homepage": "https://github.com/angular/angular-seed",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.5.x",
+    "angular-route": "~1.5.x",
+    "angular-loader": "~1.5.x",
+    "angular-mocks": "~1.5.x",
+    "html5-boilerplate": "~5.2.0",
+    "datatables.net": "^1.10.11",
+    "datatables.net-bs": "^1.10.11"
+  }
+}
