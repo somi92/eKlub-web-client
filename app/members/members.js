@@ -37,6 +37,8 @@ angular.module('eKlub.members', ['ngRoute'])
 			initializeMembersDataTable(response.data.payload);
 		}, function(error) {
 			alert("Error: " + error)
+		}).finally(function (response) {
+			
 		});
 
 	};

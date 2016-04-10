@@ -64,3 +64,15 @@ body {
   padding: 30px 10px 5px 20px;
   width: 100%;
 }
+
+.search_field {
+  margin-top: 1%;
+  float: left;
+  width: 80% !important;
+}
+
+.search_button {
+  margin-top: 1%;
+  float: right;
+  margin-left: 5px;
+}
