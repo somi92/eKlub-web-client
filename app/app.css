@@ -80,3 +80,7 @@ body {
   float: right;
   margin-left: 5px;
 }
+
+.dialog_row {
+  margin-bottom: 1%;
+}
