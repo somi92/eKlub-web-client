@@ -12,7 +12,7 @@ angular.module('eKlub.members', ['ngRoute'])
 .factory('membersFactory', function($http) {
 
 	var getAllMembersUrl = "http://localhost:8080/members";
-	var getMembersUrl = "";
+	var getMembersUrl = "http://localhost:8080/members/search";
 	var getMemberByIdUrl = "";
 	var deleteMemberUrl = "";
 	var saveMemberUrl = "";
@@ -23,30 +23,85 @@ angular.module('eKlub.members', ['ngRoute'])
 		return $http.get(getAllMembersUrl);
 	};
 
+	membersFactory.getMembers = function(searchCriteria) {
+		var data = {
+				"nameSurname": searchCriteria,
+				"idCard": searchCriteria,
+				"address": searchCriteria,
+				"email": searchCriteria,
+				"phone": searchCriteria
+		};
+		var req = {
+			url: getMembersUrl,
+		 	method: 'POST',
+		 	data: data
+		};
+
+		return $http({
+			url: getMembersUrl,
+		 	method: 'POST',
+		 	data: data
+		});
+	}
+
 	return membersFactory;
 })
 
 .controller('MembersController', function($scope, membersFactory) {
 
+	var table;
 
 	init();
+
+	$scope.reset = function() {
+		membersFactory.getAllMembers()
+		.then(function(response) {
+			$('#members_table_processing').show();
+			table.clear().draw();
+			table.rows.add(response.data.payload);
+   			table.columns.adjust().draw();
+		}, function(error) {
+			alert("Error: " + error);
+		}).finally(function (response) {
+			$scope.searchCriteria = "";
+			$('#members_table_processing').hide();
+		});
+	}
+
+	$scope.searchMembers = function() {
+		var searchCriteria = $scope.searchCriteria;
+		membersFactory.getMembers(searchCriteria)
+		.then(function(response) {
+			$('#members_table_processing').show();
+			table.clear().draw();
+			table.rows.add(response.data.payload);
+   			table.columns.adjust().draw();
+		}, function(error) {
+			alert("Error: " + JSON.stringify(error));
+		}).finally(function (response) {
+			$('#members_table_processing').hide();
+		});
+	}
 
 	function init() {
 		membersFactory.getAllMembers()
 		.then(function(response) {
+			$('#members_table_processing').show();
 			initializeMembersDataTable(response.data.payload);
 		}, function(error) {
 			alert("Error: " + error)
 		}).finally(function (response) {
-			
+			$('#members_table_processing').hide();
 		});
 
 	};
 
 	function initializeMembersDataTable(members) {
-		$('#members_table').dataTable({
+		table = $('#members_table').DataTable({
 			data: members,
 			processing: true,
+			filter: false,
+			autoWidth: false,
 			columns: [
             { "data": "id" },
             { "data": "idCard" },

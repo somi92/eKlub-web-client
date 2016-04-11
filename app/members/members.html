@@ -6,15 +6,15 @@
 		
 		<div class="col-md-6">
 			
-			<input type="text" class="form-control search_field"></input>
-			<button class="btn btn-info search_button"><i class="fa fa-refresh"></i></button>
-			<button class="btn btn-info search_button">Pretraži</button>
+			<input type="text" class="form-control search_field" ng-model="searchCriteria"></input>
+			<button class="btn btn-info search_button" ng-click="reset();"><i class="fa fa-refresh"></i></button>
+			<button class="btn btn-info search_button" ng-click="searchMembers();">Pretraži</button>
 
 		</div>
 
 		<div class="col-md-6">
 			
-			<button class="btn btn-primary" style="float: right; margin-top: 1%; margin-right: 5%;"  data-toggle="modal" data-		target="#member_dialog">Dodaj novog člana</button>
+			<button class="btn btn-primary" style="float: right; margin-top: 5%; margin-right: 5%;"  data-toggle="modal" data-		target="#member_dialog">Dodaj novog člana</button>
 
 		</div>
 
