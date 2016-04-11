@@ -5,6 +5,7 @@ angular.module('eKlub', [
   'ngRoute',
   'eKlub.dashboard',
   'eKlub.members',
+  'eKlub.groups',
   'eKlub.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
