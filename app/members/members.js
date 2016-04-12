@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('eKlub.members', ['ngRoute'])
+angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/members', {
@@ -47,7 +47,7 @@ angular.module('eKlub.members', ['ngRoute'])
 	return membersFactory;
 })
 
-.controller('MembersController', function($scope, membersFactory) {
+.controller('MembersController', function($scope, membersFactory, groupsFactory) {
 
 	var table;
 
@@ -81,6 +81,28 @@ angular.module('eKlub.members', ['ngRoute'])
 		}).finally(function (response) {
 			$('#members_table_processing').hide();
 		});
+	}
+
+	$scope.getAllGroups = function() {
+		groupsFactory.getAllGroups()
+		.then(function(response) {
+			$scope.groups = response.data.payload;
+			$scope.newMember = {};
+			$scope.newMember.group = response.data.payload[0].id;
+			alert(JSON.stringify($scope.newMember.group));
+		}, function(error) {
+			alert("Error: " + JSON.stringify(error));
+		}).finally(function (response) {
+
+		});
+	}
+
+	$scope.saveMember = function() {
+		alert(JSON.stringify($scope.newMember));
+	}
+
+	$scope.resetMemberDialog = function() {
+		$scope.newMember = {};
 	}
 
 	function init() {

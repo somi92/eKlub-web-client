@@ -14,7 +14,7 @@
 
 		<div class="col-md-6">
 			
-			<button class="btn btn-primary" style="float: right; margin-top: 5%; margin-right: 5%;" data-toggle="modal" data-target="#member_dialog">Dodaj novog člana</button>
+			<button ng-click="getAllGroups()" class="btn btn-primary" style="float: right; margin-top: 5%; margin-right: 5%;" data-toggle="modal" data-target="#member_dialog">Dodaj novog člana</button>
 
 		</div>
 
@@ -112,7 +112,9 @@
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Grupa:</div>
 		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="newMember.group" /> 
+		      				<select required name="groupSelection" id="groupSelection" class="form-control" ng-model="newMember.group">
+		      					<option ng-repeat="group in groups" value="{{group.id}}" >{{group.name}}</option>
+		      				</select>
 		      			</div>
 		      		</div>
 
@@ -127,8 +129,8 @@
 
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
-		        <button type="button" class="btn btn-primary">Sačuvaj</button>
+		        <button ng-click="resetMemberDialog()" type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
+		        <button ng-click="saveMember()" type="button" class="btn btn-primary">Sačuvaj</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
