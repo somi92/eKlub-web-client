@@ -87,9 +87,8 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		groupsFactory.getAllGroups()
 		.then(function(response) {
 			$scope.groups = response.data.payload;
-			$scope.newMember = {};
-			$scope.newMember.group = response.data.payload[0].id;
-			alert(JSON.stringify($scope.newMember.group));
+			$scope.memberDialog = { newMember: {}};
+			$scope.memberDialog.newMember.group = response.data.payload[0];
 		}, function(error) {
 			alert("Error: " + JSON.stringify(error));
 		}).finally(function (response) {
@@ -98,11 +97,12 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	}
 
 	$scope.saveMember = function() {
-		alert(JSON.stringify($scope.newMember));
+		// alert(angular.toJson($scope.memberDialog.newMember));
+		alert(JSON.stringify($scope.memberDialog.newMember));
 	}
 
 	$scope.resetMemberDialog = function() {
-		$scope.newMember = {};
+		$scope.memberDialog.newMember = {};
 	}
 
 	function init() {

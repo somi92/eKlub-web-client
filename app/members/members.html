@@ -56,64 +56,66 @@
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Broj LK:</div>
 		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="newMember.idCard" />
+		      				<input type="text" required="true" class="form-control" ng-model="memberDialog.newMember.idCard" />
 		      			</div>
 		      		</div>
 
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Ime i prezime:</div>
 		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="newMember.nameSurname" />
+		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.nameSurname" />
 		      			</div>
 		      		</div>
 
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Pol:</div>
 		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="newMember.gender" />
+		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.gender" />
 		      			</div>
 		      		</div>
 
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Email:</div>
 		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="newMember.email" />
+		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.email" />
 		      			</div>
 		      		</div>
 
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Adresa:</div>
 		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="newMember.address" />
+		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.address" />
 		      			</div>
 		      		</div>
 
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Telefon:</div>
 		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="newMember.phone" />
+		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.phone" />
 		      			</div>
 		      		</div>
 
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Datum rođenja:</div>
 		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="newMember.dateOfBirth" />
+		      				<input type="text" datepicker class="form-control" ng-model="memberDialog.newMember.dateOfBirth" />
 		      			</div>
 		      		</div>
 
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Datum učlanjenja:</div>
 		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="newMember.dateOfMembership" />
+		      				<input type="text" datepicker class="form-control" ng-model="memberDialog.newMember.dateOfMembership" />
 		      			</div>
 		      		</div>
 
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Grupa:</div>
 		      			<div class="col-md-8">
-		      				<select required name="groupSelection" id="groupSelection" class="form-control" ng-model="newMember.group">
-		      					<option ng-repeat="group in groups" value="{{group.id}}" >{{group.name}}</option>
+		      				<select required name="groupSelection" id="groupSelection" class="form-control" 
+		      					ng-options="group as group.name for group in groups track by group.id"
+		      					ng-model="memberDialog.newMember.group">
+		      					<!-- <option ng-repeat="group in groups" value="{{group.id}}" >{{group.name}}</option> -->
 		      				</select>
 		      			</div>
 		      		</div>
@@ -121,7 +123,7 @@
 		      		<div class="row dialog_row">
 		      			<div class="col-md-4">Napomena:</div>
 		      			<div class="col-md-8">
-		      				<textarea type="text" class="form-control" ng-model="newMember.remark" ></textarea> 
+		      				<textarea type="text" class="form-control" ng-model="memberDialog.newMember.remark" ></textarea> 
 		      			</div>
 		      		</div>
 
