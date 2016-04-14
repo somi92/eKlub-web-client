@@ -29,7 +29,7 @@ directive('datepicker', function(){
                 };
 
                 onblur = function () {
-                    var date = element.datetimepicker().data("DateTimePicker").date().format('DD.MM.YYYY.');
+                    var date = element.datetimepicker().data("DateTimePicker").date().format('YYYY-MM-DD');
                     return $scope.$apply(function () {
                         return controller.$setViewValue(date);
                     });

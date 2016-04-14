@@ -15,7 +15,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	var getMembersUrl = "http://localhost:8080/members/search";
 	var getMemberByIdUrl = "";
 	var deleteMemberUrl = "";
-	var saveMemberUrl = "";
+	var saveMemberUrl = "http://localhost:8080/members";
 
 	var membersFactory = {};
 
@@ -31,16 +31,18 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 				"email": searchCriteria,
 				"phone": searchCriteria
 		};
-		var req = {
-			url: getMembersUrl,
-		 	method: 'POST',
-		 	data: data
-		};
-
 		return $http({
 			url: getMembersUrl,
 		 	method: 'POST',
 		 	data: data
+		});
+	}
+
+	membersFactory.saveMember = function(member) {
+		return $http({
+			url: saveMemberUrl,
+			method: 'POST',
+			data: member
 		});
 	}
 
@@ -98,9 +100,20 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	}
 
 	$scope.saveMember = function() {
-		// alert(angular.toJson($scope.memberDialog.newMember));
 		if ($scope.newMemberForm.$valid) {
-			alert(JSON.stringify($scope.memberDialog.newMember));
+			// alert(JSON.stringify($scope.memberDialog.newMember));
+			// alert($scope.memberDialog.newMember);
+			var member = JSON.stringify($scope.memberDialog.newMember);
+			console.log(JSON.stringify(member));
+			membersFactory.saveMember(member)
+			.then(function(response) {
+				alert(JSON.stringify(response.data.payload));
+				// exit dialog
+			}, function(error) {
+				alert("Error: " + JSON.stringify(error));
+			}).finally(function(response) {
+				// refresh table
+			});
 		} else {
 			alert("Morate popuniti sva obavezna polja.");
 		}
