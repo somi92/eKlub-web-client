@@ -89,6 +89,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			$scope.groups = response.data.payload;
 			$scope.memberDialog = { newMember: {}};
 			$scope.memberDialog.newMember.group = response.data.payload[0];
+			$scope.memberDialog.newMember.gender = 'M';
 		}, function(error) {
 			alert("Error: " + JSON.stringify(error));
 		}).finally(function (response) {
@@ -98,11 +99,17 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 
 	$scope.saveMember = function() {
 		// alert(angular.toJson($scope.memberDialog.newMember));
-		alert(JSON.stringify($scope.memberDialog.newMember));
+		if ($scope.newMemberForm.$valid) {
+			alert(JSON.stringify($scope.memberDialog.newMember));
+		} else {
+			alert("Morate popuniti sva obavezna polja.");
+		}
 	}
 
 	$scope.resetMemberDialog = function() {
 		$scope.memberDialog.newMember = {};
+		$scope.newMemberForm.$setPristine();
+		$scope.newMemberForm.$setUntouched();
 	}
 
 	function init() {

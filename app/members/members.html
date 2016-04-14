@@ -53,86 +53,99 @@
 
 		      	<div class="container" style="width: 100%;">
 		      		
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Broj LK:</div>
-		      			<div class="col-md-8">
-		      				<input type="text" required="true" class="form-control" ng-model="memberDialog.newMember.idCard" />
-		      			</div>
-		      		</div>
+		      		<form name="newMemberForm" ng-submit="saveMember()" novalidate> 
 
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Ime i prezime:</div>
-		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.nameSurname" />
-		      			</div>
-		      		</div>
 
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Pol:</div>
-		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.gender" />
-		      			</div>
-		      		</div>
+		      			<div class="row dialog_row form-group" ng-class="{ 'has-error' : newMemberForm.idCard.$invalid && !newMemberForm.idCard.$pristine }">
+			      			<div class="col-md-4">Broj LK:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" name="idCard" class="form-control" ng-model="memberDialog.newMember.idCard" required />
+			      				<p ng-show="newMemberForm.idCard.$invalid && !newMemberForm.idCard.$pristine" class="help-block">Broj LK je obavezan</p>
+			      			</div>
+			      		</div>
 
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Email:</div>
-		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.email" />
-		      			</div>
-		      		</div>
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : newMemberForm.nameSurname.$invalid && !newMemberForm.nameSurname.$pristine }">
+			      			<div class="col-md-4">Ime i prezime:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" name="nameSurname" class="form-control" ng-model="memberDialog.newMember.nameSurname" required />
+			      				<p ng-show="newMemberForm.nameSurname.$invalid && !newMemberForm.nameSurname.$pristine" class="help-block">Ime i prezime je obavezno</p>
+			      			</div>
+			      		</div>
 
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Adresa:</div>
-		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.address" />
-		      			</div>
-		      		</div>
+			      		<div class="row dialog_row">
+			      			<div class="col-md-4">Pol:</div>
+			      			<div class="col-md-8" style="padding-left: 5%;">
+			      				<input type="radio" ng-model="memberDialog.newMember.gender" value="M" /><label style="margin-left: 2%; margin-right: 5%;">M</label>
+			      				<input type="radio" ng-model="memberDialog.newMember.gender" value="Ž" /><label style="margin-left: 2%; margin-right: 5%;">Ž</label>
+			      			</div>
+			      		</div>
 
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Telefon:</div>
-		      			<div class="col-md-8">
-		      				<input type="text" class="form-control" ng-model="memberDialog.newMember.phone" />
-		      			</div>
-		      		</div>
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : newMemberForm.email.$invalid && !newMemberForm.email.$pristine }">
+			      			<div class="col-md-4">Email:</div>
+			      			<div class="col-md-8">
+			      				<input type="email" name="email" class="form-control" ng-model="memberDialog.newMember.email" required />
+			      				<p ng-show="newMemberForm.email.$invalid && !newMemberForm.email.$pristine" class="help-block">E-mail nije validan</p>
+			      			</div>
+			      		</div>
 
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Datum rođenja:</div>
-		      			<div class="col-md-8">
-		      				<input type="text" datepicker class="form-control" ng-model="memberDialog.newMember.dateOfBirth" />
-		      			</div>
-		      		</div>
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : newMemberForm.address.$invalid && !newMemberForm.address.$pristine }">
+			      			<div class="col-md-4">Adresa:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" name="address" class="form-control" ng-model="memberDialog.newMember.address" required />
+			      				<p ng-show="newMemberForm.address.$invalid && !newMemberForm.address.$pristine" class="help-block">Adresa je obavezna</p>
+			      			</div>
+			      		</div>
 
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Datum učlanjenja:</div>
-		      			<div class="col-md-8">
-		      				<input type="text" datepicker class="form-control" ng-model="memberDialog.newMember.dateOfMembership" />
-		      			</div>
-		      		</div>
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : newMemberForm.phone.$invalid && !newMemberForm.phone.$pristine }">
+			      			<div class="col-md-4">Telefon:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" name="phone" class="form-control" ng-model="memberDialog.newMember.phone" required />
+			      				<p ng-show="newMemberForm.phone.$invalid && !newMemberForm.phone.$pristine" class="help-block">Telefon je obavezan</p>
+			      			</div>
+			      		</div>
 
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Grupa:</div>
-		      			<div class="col-md-8">
-		      				<select required name="groupSelection" id="groupSelection" class="form-control" 
-		      					ng-options="group as group.name for group in groups track by group.id"
-		      					ng-model="memberDialog.newMember.group">
-		      					<!-- <option ng-repeat="group in groups" value="{{group.id}}" >{{group.name}}</option> -->
-		      				</select>
-		      			</div>
-		      		</div>
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : newMemberForm.dateOfBirth.$invalid && !newMemberForm.dateOfBirth.$pristine }">
+			      			<div class="col-md-4">Datum rođenja:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" datepicker name="dateOfBirth" class="form-control" ng-model="memberDialog.newMember.dateOfBirth" required />
+			      				<p ng-show="newMemberForm.dateOfBirth.$invalid && !newMemberForm.dateOfBirth.$pristine" class="help-block">Datum rođenja je obavezan</p>
+			      			</div>
+			      		</div>
 
-		      		<div class="row dialog_row">
-		      			<div class="col-md-4">Napomena:</div>
-		      			<div class="col-md-8">
-		      				<textarea type="text" class="form-control" ng-model="memberDialog.newMember.remark" ></textarea> 
-		      			</div>
-		      		</div>
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : newMemberForm.dateOfMembership.$invalid && !newMemberForm.dateOfMembership.$pristine }">
+			      			<div class="col-md-4">Datum učlanjenja:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" datepicker name="dateOfMembership" class="form-control" ng-model="memberDialog.newMember.dateOfMembership" required />
+			      				<p ng-show="newMemberForm.dateOfMembership.$invalid && !newMemberForm.dateOfMembership.$pristine" class="help-block">Datum rođenja je obavezan</p>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row">
+			      			<div class="col-md-4">Grupa:</div>
+			      			<div class="col-md-8">
+			      				<select required name="groupSelection" id="groupSelection" class="form-control" 
+			      					ng-options="group as group.name for group in groups track by group.id"
+			      					ng-model="memberDialog.newMember.group">
+			      				</select>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row">
+			      			<div class="col-md-4">Napomena:</div>
+			      			<div class="col-md-8">
+			      				<textarea type="text" class="form-control" ng-model="memberDialog.newMember.remark" ></textarea> 
+			      			</div>
+			      		</div>
+
+		      			
+		      		</form>
 
 		      	</div>
 
 		      </div>
 		      <div class="modal-footer">
 		        <button ng-click="resetMemberDialog()" type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
-		        <button ng-click="saveMember()" type="button" class="btn btn-primary">Sačuvaj</button>
+		        <button ng-click="saveMember()" type="button" class="btn btn-primary" ng-disabled="newMemberForm.$invalid">Sačuvaj</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->

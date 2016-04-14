@@ -47,7 +47,7 @@ directive('datepicker', function(){
             }
             return attrs.$observe('datepicker', function (value) {
                 var options;
-                options = { locale: 'sr', format: 'DD.MM.YYYY.' }; //<--- insert your own defaults here!
+                options = { locale: 'sr', format: 'DD.MM.YYYY.', viewMode: 'years' }; //<--- insert your own defaults here!
                 if (angular.isObject(value)) {
                     options = value;
                 }
