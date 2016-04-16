@@ -14,7 +14,7 @@
 
 		<div class="col-md-6">
 			
-			<button ng-click="getAllGroups()" class="btn btn-primary" style="float: right; margin-top: 5%; margin-right: 5%;" data-toggle="modal" data-target="#member_dialog">Dodaj novog člana</button>
+			<button ng-click="createNewMember()" class="btn btn-primary" style="float: right; margin-top: 5%; margin-right: 5%;" data-toggle="modal" data-target="#member_dialog">Dodaj novog člana</button>
 
 		</div>
 
@@ -53,7 +53,7 @@
 
 		      	<div class="container" style="width: 100%;">
 		      		
-		      		<form name="newMemberForm" ng-submit="saveMember()" novalidate> 
+		      		<form name="newMemberForm" novalidate> 
 
 
 		      			<div class="row dialog_row form-group" ng-class="{ 'has-error' : newMemberForm.idCard.$invalid && !newMemberForm.idCard.$pristine }">
@@ -147,9 +147,121 @@
 		        <button ng-click="resetMemberDialog()" type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
 		        <button ng-click="saveMember()" type="button" class="btn btn-primary" ng-disabled="newMemberForm.$invalid">Sačuvaj</button>
 		      </div>
-		    </div><!-- /.modal-content -->
-		  </div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
+		    </div>
+		  </div>
+		</div>
+
+		<!-- edit member dialog -->
+
+		<div id="edit_member_dialog" class="modal fade" role="dialog" data-backdrop="static">
+		  <div class="modal-dialog" style="width: 80%;">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Izmena podataka o članu</h4>
+		      </div>
+		      <div class="modal-body">
+
+		      	<div class="container" style="width: 40%;">
+		      		
+		      		<form name="editMemberForm" novalidate> 
+
+
+
+		      			<div class="row dialog_row form-group" ng-class="{ 'has-error' : editMemberForm.idCard.$invalid && !editMemberForm.idCard.$pristine }">
+			      			<div class="col-md-4">Broj LK:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" name="idCard" class="form-control" ng-model="memberDialog.editMember.idCard" required />
+			      				<p ng-show="editMemberForm.idCard.$invalid && !editMemberForm.idCard.$pristine" class="help-block">Broj LK je obavezan</p>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : editMemberForm.nameSurname.$invalid && !editMemberForm.nameSurname.$pristine }">
+			      			<div class="col-md-4">Ime i prezime:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" name="nameSurname" class="form-control" ng-model="memberDialog.editMember.nameSurname" required />
+			      				<p ng-show="editMemberForm.nameSurname.$invalid && !editMemberForm.nameSurname.$pristine" class="help-block">Ime i prezime je obavezno</p>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row">
+			      			<div class="col-md-4">Pol:</div>
+			      			<div class="col-md-8" style="padding-left: 5%;">
+			      				<input type="radio" ng-model="memberDialog.editMember.gender" value="M" /><label style="margin-left: 2%; margin-right: 5%;">M</label>
+			      				<input type="radio" ng-model="memberDialog.editMember.gender" value="Ž" /><label style="margin-left: 2%; margin-right: 5%;">Ž</label>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : editMemberForm.email.$invalid && !editMemberForm.email.$pristine }">
+			      			<div class="col-md-4">Email:</div>
+			      			<div class="col-md-8">
+			      				<input type="email" name="email" class="form-control" ng-model="memberDialog.editMember.email" required />
+			      				<p ng-show="editMemberForm.email.$invalid && !editMemberForm.email.$pristine" class="help-block">E-mail nije validan</p>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : editMemberForm.address.$invalid && !editMemberForm.address.$pristine }">
+			      			<div class="col-md-4">Adresa:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" name="address" class="form-control" ng-model="memberDialog.editMember.address" required />
+			      				<p ng-show="editMemberForm.address.$invalid && !editMemberForm.address.$pristine" class="help-block">Adresa je obavezna</p>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : editMemberForm.phone.$invalid && !editMemberForm.phone.$pristine }">
+			      			<div class="col-md-4">Telefon:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" name="phone" class="form-control" ng-model="memberDialog.editMember.phone" required />
+			      				<p ng-show="editMemberForm.phone.$invalid && !editMemberForm.phone.$pristine" class="help-block">Telefon je obavezan</p>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : editMemberForm.dateOfBirth.$invalid && !editMemberForm.dateOfBirth.$pristine }">
+			      			<div class="col-md-4">Datum rođenja:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" datepicker name="dateOfBirth" class="form-control" ng-model="memberDialog.editMember.dateOfBirth" required />
+			      				<p ng-show="editMemberForm.dateOfBirth.$invalid && !editMemberForm.dateOfBirth.$pristine" class="help-block">Datum rođenja je obavezan</p>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row form-group" ng-class="{ 'has-error' : editMemberForm.dateOfMembership.$invalid && !editMemberForm.dateOfMembership.$pristine }">
+			      			<div class="col-md-4">Datum učlanjenja:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" datepicker name="dateOfMembership" class="form-control" ng-model="memberDialog.editMember.dateOfMembership" required />
+			      				<p ng-show="editMemberForm.dateOfMembership.$invalid && !editMemberForm.dateOfMembership.$pristine" class="help-block">Datum rođenja je obavezan</p>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row">
+			      			<div class="col-md-4">Grupa:</div>
+			      			<div class="col-md-8">
+			      				<select required name="groupSelection" id="groupSelection" class="form-control" 
+			      					ng-options="group as group.name for group in groups track by group.id"
+			      					ng-model="memberDialog.editMember.group">
+			      				</select>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row">
+			      			<div class="col-md-4">Napomena:</div>
+			      			<div class="col-md-8">
+			      				<textarea type="text" class="form-control" ng-model="memberDialog.editMember.remark" ></textarea> 
+			      			</div>
+			      		</div>
+
+		      			
+		      		</form>
+
+		      	</div>
+
+		      </div>
+		      <div class="modal-footer">
+		        <button ng-click="resetEditMemberDialog()" type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
+		        <button ng-click="editMember()" type="button" class="btn btn-primary" ng-disabled="editMemberForm.$invalid">Sačuvaj</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
 	<div>
 

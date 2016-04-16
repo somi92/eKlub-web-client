@@ -13,7 +13,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 
 	var getAllMembersUrl = "http://localhost:8080/members";
 	var getMembersUrl = "http://localhost:8080/members/search";
-	var getMemberByIdUrl = "";
+	var getMemberByIdUrl = "http://localhost:8080/members/id";
 	var deleteMemberUrl = "";
 	var saveMemberUrl = "http://localhost:8080/members";
 
@@ -44,6 +44,11 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			method: 'POST',
 			data: member
 		});
+	}
+
+	membersFactory.getMemberById = function(id) {
+		var targetUrl = getMemberByIdUrl.replace("id", id);
+		return $http.get(targetUrl);
 	}
 
 	return membersFactory;
@@ -85,7 +90,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		});
 	}
 
-	$scope.getAllGroups = function() {
+	$scope.createNewMember = function() {
 		groupsFactory.getAllGroups()
 		.then(function(response) {
 			$scope.groups = response.data.payload;
@@ -95,14 +100,35 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		}, function(error) {
 			alert("Error: " + JSON.stringify(error));
 		}).finally(function (response) {
+			
+		});
+	}
 
+	$scope.getMemberById = function(id) {
+		groupsFactory.getAllGroups()
+		.then(function(response) {
+			$scope.groups = response.data.payload;
+			$scope.memberDialog = { editMember: {}};
+			membersFactory.getMemberById(id)
+			.then(function(response){
+				// getAllGroups();
+				$scope.memberDialog = { editMember: {}};
+				// console.log(response.data.payload);
+				$scope.memberDialog.editMember = response.data.payload;
+			}, function(error) {
+				alert("Error: " + JSON.stringify(error));
+			}).finally(function(response) {
+
+			});
+		}, function(error) {
+			alert("Error: " + JSON.stringify(error));
+		}).finally(function (response) {
+			
 		});
 	}
 
 	$scope.saveMember = function() {
 		if ($scope.newMemberForm.$valid) {
-			// alert(JSON.stringify($scope.memberDialog.newMember));
-			// alert($scope.memberDialog.newMember);
 			var member = JSON.stringify($scope.memberDialog.newMember);
 			console.log(JSON.stringify(member));
 			membersFactory.saveMember(member)
@@ -119,10 +145,20 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		}
 	}
 
+	$scope.editMember = function() {
+
+	}
+
 	$scope.resetMemberDialog = function() {
 		$scope.memberDialog.newMember = {};
 		$scope.newMemberForm.$setPristine();
 		$scope.newMemberForm.$setUntouched();
+	}
+
+	$scope.resetEditMemberDialog = function() {
+		$scope.memberDialog.editMember = {};
+		$scope.editMemberForm.$setPristine();
+		$scope.editMemberForm.$setUntouched();
 	}
 
 	function init() {
@@ -156,7 +192,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
             { "data": "dateOfMembership" },
             { "data": "group.name", "defaultContent": "" },
             { "data": null, "render":function(data, type, row) {
-            							return '<button class="btn btn-default" onclick="alert(' + data.id + ');" style="margin-right: 5%;"><i class="fa fa-search fa-fw"></i></button>'
+            							return '<button data-toggle="modal" data-target="#edit_member_dialog" class="btn btn-default" onclick=\"angular.element(this).scope().getMemberById(\'' + data.id + '\')\" style="margin-right: 5%;"><i class="fa fa-search fa-fw"></i></button>'
             									+ '<button class="btn btn-default" onclick="alert(' + data.id + ');"><i class="fa fa-times fa-fw" style="color:red;"></i></button>';
             						}}],
 

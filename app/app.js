@@ -36,9 +36,10 @@ directive('datepicker', function(){
                 };
 
                 controller.$render = function () {
-                    var date = controller.$viewValue;
+                    // var date = controller.$viewValue;
+                    var date = moment(controller.$viewValue, "DD.MM.YYYY.");
                     if (angular.isDefined(date) && date != null && moment.isMoment(date)) {
-            			element.datetimepicker().data("DateTimePicker").setDate(date);
+            			element.datetimepicker().data("DateTimePicker").date(date);
                     } else if (angular.isDefined(date)) {
                         throw new Error('ng-model value must be a Moment - currently it is a ' + typeof date + '.');
                     }
