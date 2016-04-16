@@ -155,7 +155,10 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
             { "data": "dateOfBirth" },
             { "data": "dateOfMembership" },
             { "data": "group.name", "defaultContent": "" },
-            { "data": "group.id", "defaultContent": "" }],
+            { "data": null, "render":function(data, type, row) {
+            							return '<button class="btn btn-default" onclick="alert(' + data.id + ');" style="margin-right: 5%;"><i class="fa fa-search fa-fw"></i></button>'
+            									+ '<button class="btn btn-default" onclick="alert(' + data.id + ');"><i class="fa fa-times fa-fw" style="color:red;"></i></button>';
+            						}}],
 
             language: {
 			    "sProcessing":   "Procesiranje u toku...",
