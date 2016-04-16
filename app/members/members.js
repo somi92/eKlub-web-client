@@ -57,6 +57,8 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 .controller('MembersController', function($scope, membersFactory, groupsFactory) {
 
 	var table;
+	var paymentsTable;
+	var attendanceTable;
 
 	init();
 
@@ -115,6 +117,8 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 				$scope.memberDialog = { editMember: {}};
 				// console.log(response.data.payload);
 				$scope.memberDialog.editMember = response.data.payload;
+				initializePaymentsTable(response.data.payload.payments);
+				initializeAttendancesTable(response.data.payload.attendances);
 			}, function(error) {
 				alert("Error: " + JSON.stringify(error));
 			}).finally(function(response) {
@@ -196,7 +200,69 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
             									+ '<button class="btn btn-default" onclick="alert(' + data.id + ');"><i class="fa fa-times fa-fw" style="color:red;"></i></button>';
             						}}],
 
-            language: {
+            language: languageSettings
+		});
+	}
+
+	function initializePaymentsTable(payments) {
+
+		if(!$.fn.DataTable.isDataTable('#payments_table')) {
+			paymentsTable = $('#payments_table').DataTable({
+			data: payments,
+			processing: true,
+			filter: false,
+			pageLength: 5,
+			lengthChange: false,
+			autoWidth: false,
+			columns: [
+				{"data":"id"},
+				{"data":"fee.dateFrom"},
+				{"data":"fee.dateTo"},
+				{"data":"amount"},
+				{"data":"dateOfPayment"}],
+
+				language: languageSettings
+			});
+		} else {
+			console.log(payments);
+			paymentsTable.clear().draw();
+			paymentsTable.rows.add(payments);
+   			paymentsTable.columns.adjust().draw();
+		}
+	}
+
+	function initializeAttendancesTable(attendances) {
+		if(!$.fn.DataTable.isDataTable('#attendances_table')) {
+			attendanceTable = $('#attendances_table').DataTable({
+			data: attendances,
+			processing: true,
+			filter: false,
+			pageLength: 5,
+			lengthChange: false,
+			autoWidth: false,
+			columns: [
+				{"data":"id"},
+				{"data":"training.dateTime"},
+				{"data":"training.durationMinutes"},
+				{"data":null, "render":function(data, type, row) {
+					if(data.isAttendant == true)
+						return "Da";
+					else
+						return "Ne";
+				}},
+				{"data":"lateMin"}],
+
+				language: languageSettings
+			});
+		} else {
+			console.log(attendances);
+			attendanceTable.clear().draw();
+			attendanceTable.rows.add(attendances);
+   			attendanceTable.columns.adjust().draw();
+		}
+	}
+
+	var languageSettings = {
 			    "sProcessing":   "Procesiranje u toku...",
 			    "sLengthMenu":   "Prikaži _MENU_ elemenata",
 			    "sZeroRecords":  "Nije pronađen nijedan rezultat",
@@ -212,8 +278,5 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			        "sNext":     "Sledeća",
 			        "sLast":     "Poslednja"
 			    }
-			}
-		});
-	}
-
+			};
 });
