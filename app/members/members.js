@@ -38,6 +38,17 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		});
 	}
 
+	membersFactory.getMembersByGroup = function(groupId) {
+		var data = {
+				"group": groupId
+		};
+		return $http({
+			url: getMembersUrl,
+		 	method: 'POST',
+		 	data: data
+		});
+	}
+
 	membersFactory.saveMember = function(member) {
 		return $http({
 			url: saveMemberUrl,
@@ -80,6 +91,20 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	$scope.searchMembers = function() {
 		var searchCriteria = $scope.searchCriteria;
 		membersFactory.getMembers(searchCriteria)
+		.then(function(response) {
+			$('#members_table_processing').show();
+			table.clear().draw();
+			table.rows.add(response.data.payload);
+   			table.columns.adjust().draw();
+		}, function(error) {
+			alert("Error: " + JSON.stringify(error));
+		}).finally(function (response) {
+			$('#members_table_processing').hide();
+		});
+	}
+
+	$scope.filterMembersByGroup = function(groupId) {
+		membersFactory.getMembersByGroup(groupId)
 		.then(function(response) {
 			$('#members_table_processing').show();
 			table.clear().draw();
@@ -166,6 +191,14 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	}
 
 	function init() {
+		groupsFactory.getAllGroups()
+		.then(function(response) {
+			$scope.groups = response.data.payload;
+		}, function(error) {
+			alert("Error: " + error)
+		}).finally(function (response) {
+
+		});
 		membersFactory.getAllMembers()
 		.then(function(response) {
 			$('#members_table_processing').show();

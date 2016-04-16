@@ -8,6 +8,14 @@
 			
 			<input type="text" class="form-control search_field" ng-model="searchCriteria"></input>
 			<button class="btn btn-info search_button" ng-click="reset();"><i class="fa fa-refresh"></i></button>
+			<div class="btn-group search_button">
+			  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			    Filtriraj po grupi <span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu">
+			  	<li ng-repeat="group in groups"><a style="cursor: pointer;" ng-click="filterMembersByGroup(group.id);">{{group.name}}</a></li>
+			  </ul>
+			</div>
 			<button class="btn btn-info search_button" ng-click="searchMembers();">Pretraži</button>
 
 		</div>
