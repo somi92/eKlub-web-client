@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('eKlub', [
+var eKlubApp = angular.module('eKlub', [
   'ngRoute',
   'eKlub.dashboard',
   'eKlub.members',
@@ -10,9 +10,9 @@ angular.module('eKlub', [
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/dashboard'});
-}]).
+}]);
 
-directive('datepicker', function(){
+eKlubApp.directive('datepicker', function(){
     return {
       require: '?ngModel',
       restrict: 'A',
@@ -59,4 +59,15 @@ directive('datepicker', function(){
             });
         }
     };
+});
+
+eKlubApp.directive('showtab', function() {
+	return {
+		link: function (scope, element, attrs) {
+				element.click(function(e) {
+                    e.preventDefault();
+                    $(element).tab('show');
+                });
+            }
+        };
 });
