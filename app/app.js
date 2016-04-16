@@ -37,7 +37,7 @@ eKlubApp.directive('datepicker', function(){
 
                 controller.$render = function () {
                     // var date = controller.$viewValue;
-                    var date = moment(controller.$viewValue, "DD.MM.YYYY.");
+                    var date = moment(controller.$viewValue, "YYYY-MM-DD");
                     if (angular.isDefined(date) && date != null && moment.isMoment(date)) {
             			element.datetimepicker().data("DateTimePicker").date(date);
                     } else if (angular.isDefined(date)) {
@@ -48,7 +48,7 @@ eKlubApp.directive('datepicker', function(){
             }
             return attrs.$observe('datepicker', function (value) {
                 var options;
-                options = { locale: 'sr', format: 'DD.MM.YYYY.', viewMode: 'years' }; //<--- insert your own defaults here!
+                options = { locale: 'sr', format: 'YYYY-MM-DD', extraFormats: [ 'DD.MM.YYYY', 'DD.MM.YYYY.' ], viewMode: 'years' }; //<--- insert your own defaults here!
                 if (angular.isObject(value)) {
                     options = value;
                 }

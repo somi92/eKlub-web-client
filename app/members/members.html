@@ -4,23 +4,29 @@
 
 	<div class="row" style="height: 70px;">
 		
-		<div class="col-md-6">
-			
-			<input type="text" class="form-control search_field" ng-model="searchCriteria"></input>
-			<button class="btn btn-info search_button" ng-click="reset();"><i class="fa fa-refresh"></i></button>
+		<div class="col-md-5">
+
+			<div class="col-lg-6 search_field">
+				<div class="input-group">
+			      <input type="text" class="form-control" ng-model="searchCriteria" placeholder="Unesite kriterijum pretrage"></input>
+			      <span class="input-group-btn">
+			        <button class="btn btn-info" ng-click="searchMembers();" title="Pretraži"><i class="fa fa-search"></i></button>
+			      </span>
+			    </div>
+			</div>
+			<button class="btn btn-info search_button" ng-click="reset();" title="Poništi pretragu i filter"><i class="fa fa-refresh"></i></button>
 			<div class="btn-group search_button">
-			  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			    Filtriraj po grupi <span class="caret"></span>
+			  <button type="button" class="btn btn-info dropdown-toggle" title="Filtriraj po grupi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			    <i class="fa fa-users">&nbsp;</i><span class="caret"></span>
 			  </button>
 			  <ul class="dropdown-menu">
 			  	<li ng-repeat="group in groups"><a style="cursor: pointer;" ng-click="filterMembersByGroup(group.id);">{{group.name}}</a></li>
 			  </ul>
 			</div>
-			<button class="btn btn-info search_button" ng-click="searchMembers();">Pretraži</button>
 
 		</div>
 
-		<div class="col-md-6">
+		<div class="col-md-7">
 			
 			<button ng-click="createNewMember()" class="btn btn-primary" style="float: right; margin-top: 5%; margin-right: 5%;" data-toggle="modal" data-target="#member_dialog">Dodaj novog člana</button>
 

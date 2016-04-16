@@ -175,7 +175,21 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	}
 
 	$scope.editMember = function() {
-
+		if ($scope.editMemberForm.$valid) {
+			var member = JSON.stringify($scope.memberDialog.editMember);
+			console.log(JSON.stringify(member));
+			membersFactory.saveMember(member)
+			.then(function(response) {
+				alert(JSON.stringify(response.data.payload));
+				// exit dialog
+			}, function(error) {
+				alert("Error: " + JSON.stringify(error.data));
+			}).finally(function(response) {
+				// refresh table
+			});
+		} else {
+			alert("Morate popuniti sva obavezna polja.");
+		}
 	}
 
 	$scope.resetMemberDialog = function() {
@@ -229,7 +243,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
             { "data": "dateOfMembership" },
             { "data": "group.name", "defaultContent": "" },
             { "data": null, "render":function(data, type, row) {
-            							return '<button data-toggle="modal" data-target="#edit_member_dialog" class="btn btn-default" onclick=\"angular.element(this).scope().getMemberById(\'' + data.id + '\')\" style="margin-right: 5%;"><i class="fa fa-search fa-fw"></i></button>'
+            							return '<button data-toggle="modal" data-target="#edit_member_dialog" class="btn btn-default" onclick=\"angular.element(this).scope().getMemberById(\'' + data.id + '\')\" style="margin-right: 5%;"><i class="fa fa-folder-open fa-fw"></i></button>'
             									+ '<button class="btn btn-default" onclick="alert(' + data.id + ');"><i class="fa fa-times fa-fw" style="color:red;"></i></button>';
             						}}],
 
