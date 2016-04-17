@@ -166,7 +166,6 @@
 		</div>
 
 		<!-- edit member dialog -->
-
 		<div id="edit_member_dialog" class="modal fade" role="dialog" data-backdrop="static">
 		  <div class="modal-dialog" style="width: 80%;">
 		    <div class="modal-content">
@@ -354,6 +353,24 @@
 		      </div>
 		      <div class="modal-footer">
 		        <button ng-click="resetEditMemberDialog()" type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<div id="delete_member_dialog" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Jeste li sigurni da želite obrisati člana?</h4>
+		      </div>
+		      <div class="modal-body">
+
+		      </div>
+		      <div class="modal-footer">
+		        <button ng-click="resetMemberForDeletion();" type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
+		        <button type="button" class="btn btn-danger" ng-click="deleteMember();">Obriši</button>
 		      </div>
 		    </div>
 		  </div>

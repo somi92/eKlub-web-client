@@ -14,7 +14,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	var getAllMembersUrl = "http://localhost:8080/members";
 	var getMembersUrl = "http://localhost:8080/members/search";
 	var getMemberByIdUrl = "http://localhost:8080/members/id";
-	var deleteMemberUrl = "";
+	var deleteMemberUrl = "http://localhost:8080/members/id";
 	var saveMemberUrl = "http://localhost:8080/members";
 
 	var membersFactory = {};
@@ -60,6 +60,11 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	membersFactory.getMemberById = function(id) {
 		var targetUrl = getMemberByIdUrl.replace("id", id);
 		return $http.get(targetUrl);
+	}
+
+	membersFactory.deleteMemberById = function(id) {
+		var targetUrl = deleteMemberUrl.replace("id", id);
+		return $http.delete(targetUrl);
 	}
 
 	return membersFactory;
@@ -192,6 +197,24 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		}
 	}
 
+	$scope.deleteMember = function () {
+		var memberId = $scope.deleteMember.id;
+		membersFactory.deleteMemberById(memberId)
+		.then(function(response) {
+			alert(JSON.stringify(response.data.payload));
+			// exit dialog
+		}, function(error) {
+			alert("Error: " + JSON.stringify(error.data));
+		}).finally(function(response) {
+			// refresh table
+		});
+	}
+
+	$scope.setUpMemberForDeletion = function(memberId) {
+		$scope.deleteMember.id = memberId;
+		console.log("setup " + $scope.deleteMember.id);
+	}
+
 	$scope.resetMemberDialog = function() {
 		$scope.memberDialog.newMember = {};
 		$scope.newMemberForm.$setPristine();
@@ -202,6 +225,11 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		$scope.memberDialog.editMember = {};
 		$scope.editMemberForm.$setPristine();
 		$scope.editMemberForm.$setUntouched();
+	}
+
+	$scope.resetMemberForDeletion = function() {
+		$scope.deleteMember.id = {};
+		console.log("reset " + $scope.deleteMember.id);
 	}
 
 	function init() {
@@ -244,7 +272,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
             { "data": "group.name", "defaultContent": "" },
             { "data": null, "render":function(data, type, row) {
             							return '<button data-toggle="modal" data-target="#edit_member_dialog" class="btn btn-default" onclick=\"angular.element(this).scope().getMemberById(\'' + data.id + '\')\" style="margin-right: 5%;"><i class="fa fa-folder-open fa-fw"></i></button>'
-            									+ '<button class="btn btn-default" onclick="alert(' + data.id + ');"><i class="fa fa-times fa-fw" style="color:red;"></i></button>';
+            									+ '<button onclick="angular.element(this).scope().setUpMemberForDeletion(' + data.id + ')" class="btn btn-default" data-toggle="modal" data-target="#delete_member_dialog"><i class="fa fa-times fa-fw" style="color:red;"></i></button>';
             						}}],
 
             language: languageSettings
