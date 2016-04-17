@@ -2,4 +2,46 @@
 	
 	<h1 class="view_title">Grupe <i class="fa fa-users fa-fw icon-large" style="float: right;"></i></h1>
 
+	<div class="row" style="height: 70px;">
+		
+		<div class="col-md-5">
+				
+			<div class="col-lg-6 search_field">
+
+				<div class="input-group">
+				    <input type="text" class="form-control" ng-model="searchCriteria" placeholder="Unesite kriterijum pretrage"></input>
+					<span class="input-group-btn">
+						<button class="btn btn-info" ng-click="" title="Pretraži"><i class="fa fa-search"></i></button>
+				    </span>
+				</div>
+			</div>
+			<button class="btn btn-info search_button" ng-click="reset();" title="Poništi pretragu i filter"><i class="fa fa-refresh"></i></button>
+				
+		</div>
+
+		<div class="col-md-7">
+			
+			<button ng-click="" class="btn btn-primary" style="float: right; margin-top: 5%; margin-right: 5%;" data-toggle="modal" data-target="">Dodaj novu grupu</button>
+
+		</div>
+
+	</div>
+
+	<div class="row table_wrapper">
+		
+		<table id="groups_table" class="table table-striped table-bordered table-hover" cellspacing="0">
+			
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Naziv</th>
+					<th>Kategorija</th>
+					<th>Napomena</th>
+				</tr>
+			</thead>
+
+		</table>
+
+	</div>
+
 </div>

@@ -79,9 +79,9 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	init();
 
 	$scope.reset = function() {
+		$('#members_table_processing').show();
 		membersFactory.getAllMembers()
 		.then(function(response) {
-			$('#members_table_processing').show();
 			table.clear().draw();
 			table.rows.add(response.data.payload);
    			table.columns.adjust().draw();
@@ -94,10 +94,10 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	}
 
 	$scope.searchMembers = function() {
+		$('#members_table_processing').show();
 		var searchCriteria = $scope.searchCriteria;
 		membersFactory.getMembers(searchCriteria)
 		.then(function(response) {
-			$('#members_table_processing').show();
 			table.clear().draw();
 			table.rows.add(response.data.payload);
    			table.columns.adjust().draw();
@@ -109,9 +109,9 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	}
 
 	$scope.filterMembersByGroup = function(groupId) {
+		$('#members_table_processing').show();
 		membersFactory.getMembersByGroup(groupId)
 		.then(function(response) {
-			$('#members_table_processing').show();
 			table.clear().draw();
 			table.rows.add(response.data.payload);
    			table.columns.adjust().draw();
@@ -250,9 +250,9 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		}).finally(function (response) {
 
 		});
+		$('#members_table_processing').show();
 		membersFactory.getAllMembers()
 		.then(function(response) {
-			$('#members_table_processing').show();
 			initializeMembersDataTable(response.data.payload);
 		}, function(error) {
 			handleErrorResponse(error.data);
