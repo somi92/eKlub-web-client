@@ -86,7 +86,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			table.rows.add(response.data.payload);
    			table.columns.adjust().draw();
 		}, function(error) {
-			alert("Error: " + error);
+			handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$scope.searchCriteria = "";
 			$('#members_table_processing').hide();
@@ -102,7 +102,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			table.rows.add(response.data.payload);
    			table.columns.adjust().draw();
 		}, function(error) {
-			alert("Error: " + JSON.stringify(error));
+			handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#members_table_processing').hide();
 		});
@@ -116,7 +116,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			table.rows.add(response.data.payload);
    			table.columns.adjust().draw();
 		}, function(error) {
-			alert("Error: " + JSON.stringify(error));
+			handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#members_table_processing').hide();
 		});
@@ -130,7 +130,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			$scope.memberDialog.newMember.group = response.data.payload[0];
 			$scope.memberDialog.newMember.gender = 'M';
 		}, function(error) {
-			alert("Error: " + JSON.stringify(error));
+			handleErrorResponse(error.data);
 		}).finally(function (response) {
 			
 		});
@@ -143,19 +143,17 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			$scope.memberDialog = { editMember: {}};
 			membersFactory.getMemberById(id)
 			.then(function(response){
-				// getAllGroups();
 				$scope.memberDialog = { editMember: {}};
-				// console.log(response.data.payload);
 				$scope.memberDialog.editMember = response.data.payload;
 				initializePaymentsTable(response.data.payload.payments);
 				initializeAttendancesTable(response.data.payload.attendances);
 			}, function(error) {
-				alert("Error: " + JSON.stringify(error));
+				handleErrorResponse(error.data);
 			}).finally(function(response) {
 
 			});
 		}, function(error) {
-			alert("Error: " + JSON.stringify(error));
+			handleErrorResponse(error.data);
 		}).finally(function (response) {
 			
 		});
@@ -167,12 +165,16 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			console.log(JSON.stringify(member));
 			membersFactory.saveMember(member)
 			.then(function(response) {
-				alert(JSON.stringify(response.data.payload));
-				// exit dialog
+				if(response.data.status == "200") {
+					alert("Član je sačuvan.");
+				} else {
+					alert(response.data.message);
+				}
+				$('#member_dialog').modal('hide');
 			}, function(error) {
-				alert("Error: " + JSON.stringify(error));
+				handleErrorResponse(error.data);
 			}).finally(function(response) {
-				// refresh table
+				$scope.reset();
 			});
 		} else {
 			alert("Morate popuniti sva obavezna polja.");
@@ -185,12 +187,16 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			console.log(JSON.stringify(member));
 			membersFactory.saveMember(member)
 			.then(function(response) {
-				alert(JSON.stringify(response.data.payload));
-				// exit dialog
+				if(response.data.status == "200") {
+					alert("Član je sačuvan.");
+				} else {
+					alert(response.data.message);
+				}
+				$('#edit_member_dialog').modal('hide');
 			}, function(error) {
-				alert("Error: " + JSON.stringify(error.data));
+				handleErrorResponse(error.data);
 			}).finally(function(response) {
-				// refresh table
+				$scope.reset();
 			});
 		} else {
 			alert("Morate popuniti sva obavezna polja.");
@@ -201,18 +207,22 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		var memberId = $scope.deleteMember.id;
 		membersFactory.deleteMemberById(memberId)
 		.then(function(response) {
-			alert(JSON.stringify(response.data.payload));
-			// exit dialog
+			if(response.data.status == "200") {
+				alert("Član je obrisan.");
+			} else {
+				alert(response.data.message);
+			}
+			$('#delete_member_dialog').modal('hide');
 		}, function(error) {
-			alert("Error: " + JSON.stringify(error.data));
+			handleErrorResponse(error.data);
 		}).finally(function(response) {
-			// refresh table
+			$scope.reset();
 		});
 	}
 
-	$scope.setUpMemberForDeletion = function(memberId) {
+	$scope.setUpMemberForDeletion = function(memberId, memberName) {
 		$scope.deleteMember.id = memberId;
-		console.log("setup " + $scope.deleteMember.id);
+		$('#delete_message').html(memberId + " - " + memberName);
 	}
 
 	$scope.resetMemberDialog = function() {
@@ -229,7 +239,6 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 
 	$scope.resetMemberForDeletion = function() {
 		$scope.deleteMember.id = {};
-		console.log("reset " + $scope.deleteMember.id);
 	}
 
 	function init() {
@@ -237,7 +246,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		.then(function(response) {
 			$scope.groups = response.data.payload;
 		}, function(error) {
-			alert("Error: " + error)
+			handleErrorResponse(error.data);
 		}).finally(function (response) {
 
 		});
@@ -246,7 +255,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			$('#members_table_processing').show();
 			initializeMembersDataTable(response.data.payload);
 		}, function(error) {
-			alert("Error: " + error)
+			handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#members_table_processing').hide();
 		});
@@ -272,7 +281,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
             { "data": "group.name", "defaultContent": "" },
             { "data": null, "render":function(data, type, row) {
             							return '<button data-toggle="modal" data-target="#edit_member_dialog" class="btn btn-default" onclick=\"angular.element(this).scope().getMemberById(\'' + data.id + '\')\" style="margin-right: 5%;"><i class="fa fa-folder-open fa-fw"></i></button>'
-            									+ '<button onclick="angular.element(this).scope().setUpMemberForDeletion(' + data.id + ')" class="btn btn-default" data-toggle="modal" data-target="#delete_member_dialog"><i class="fa fa-times fa-fw" style="color:red;"></i></button>';
+            									+ '<button onclick="angular.element(this).scope().setUpMemberForDeletion(' + data.id + ', \'' + data.nameSurname + '\')" class="btn btn-default" data-toggle="modal" data-target="#delete_member_dialog"><i class="fa fa-times fa-fw" style="color:red;"></i></button>';
             						}}],
 
             language: languageSettings
@@ -338,20 +347,41 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	}
 
 	var languageSettings = {
-			    "sProcessing":   "Procesiranje u toku...",
-			    "sLengthMenu":   "Prikaži _MENU_ elemenata",
-			    "sZeroRecords":  "Nije pronađen nijedan rezultat",
-			    "sInfo":         "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
-			    "sInfoEmpty":    "Prikaz 0 do 0 od ukupno 0 elemenata",
-			    "sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
-			    "sInfoPostFix":  "",
-			    "sSearch":       "Pretraga:",
-			    "sUrl":          "",
-			    "oPaginate": {
-			        "sFirst":    "Početna",
-			        "sPrevious": "Prethodna",
-			        "sNext":     "Sledeća",
-			        "sLast":     "Poslednja"
-			    }
-			};
+		"sProcessing": "Procesiranje u toku...",
+		"sLengthMenu": "Prikaži _MENU_ elemenata",
+		"sZeroRecords": "Nije pronađen nijedan rezultat",
+		"sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
+		"sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
+	    "sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
+		"sInfoPostFix":  "",
+		"sSearch": "Pretraga:",
+		"sUrl": "",
+		"oPaginate": {
+		    "sFirst":    "Početna",
+		    "sPrevious": "Prethodna",
+		    "sNext":     "Sledeća",
+		    "sLast":     "Poslednja"
+		}
+	};
+
+	function handleErrorResponse(errorContainer) {
+		var message = "";
+		var status = errorContainer.status;
+		switch(status) {
+			case "400":
+				message = "Greška. Zahtev je nije validan.";
+				break;
+			case "404":
+				message = "Sistem nije pronašao resurse koje tražite.";
+				break;
+			case "500":
+				message = "Greška na serveru.";
+				break;
+			default:
+				message = errorContainer.message;
+		}
+		console.log(errorContainer);
+		alert(message);
+	}
+
 });
