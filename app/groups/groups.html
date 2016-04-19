@@ -21,7 +21,7 @@
 
 		<div class="col-md-7">
 			
-			<button ng-click="" class="btn btn-primary" style="float: right; margin-top: 5%; margin-right: 5%;" data-toggle="modal" data-target="">Dodaj novu grupu</button>
+			<button ng-click="" class="btn btn-primary" style="float: right; margin-top: 5%; margin-right: 5%;" data-toggle="modal" data-target="#group_dialog">Dodaj novu grupu</button>
 
 		</div>
 
@@ -41,6 +41,59 @@
 			</thead>
 
 		</table>
+
+		<!-- add group dialog -->
+		<div id="group_dialog" class="modal fade" role="dialog" data-backdrop="static">
+		  <div class="modal-dialog" style="width: 30%;">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Dodavanje nove grupe</h4>
+		      </div>
+		      <div class="modal-body">
+
+		      	<div class="container" style="width: 100%;">
+		      		
+		      		<form name="newGroupForm" novalidate> 
+
+
+		      			<div class="row dialog_row form-group" ng-class="{ 'has-error' : newGroupForm.name.$invalid && !newGroupForm.name.$pristine }">
+			      			<div class="col-md-4">Naziv:</div>
+			      			<div class="col-md-8">
+			      				<input type="text" name="name" class="form-control" ng-model="groupDialog.newGroup.name" required />
+			      				<p ng-show="newGroupForm.name.$invalid && !newGroupForm.name.$pristine" class="help-block">Naziv je obavezan</p>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row">
+			      			<div class="col-md-4">Kategorija:</div>
+			      			<div class="col-md-8">
+			      				<select required name="categorySelection" id="categorySelection" class="form-control" 
+			      					ng-options="category as category.name for category in categories track by category.id"
+			      					ng-model="groupDialog.newGroup.category">
+			      				</select>
+			      			</div>
+			      		</div>
+
+			      		<div class="row dialog_row">
+			      			<div class="col-md-4">Napomena:</div>
+			      			<div class="col-md-8">
+			      				<textarea type="text" class="form-control" ng-model="groupDialog.newGroup.remark" ></textarea> 
+			      			</div>
+			      		</div>
+		      			
+		      		</form>
+
+		      	</div>
+
+		      </div>
+		      <div class="modal-footer">
+		        <button ng-click="resetGroupDialog()" type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
+		        <button ng-click="saveGroup()" type="button" class="btn btn-primary" ng-disabled="newGroupForm.$invalid">Sačuvaj</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
 	</div>
 

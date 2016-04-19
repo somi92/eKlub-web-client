@@ -16,8 +16,12 @@ angular.module('eKlub.groups', ['ngRoute'])
 
 	var groupsFactory = {};
 
-	groupsFactory.saveGroup = function() {
-
+	groupsFactory.saveGroup = function(group) {
+		return $http({
+			url: saveMemberUrl,
+			method: 'POST',
+			data: group
+		});
 	}
 
 	groupsFactory.getAllGroups = function() {
@@ -44,6 +48,34 @@ angular.module('eKlub.groups', ['ngRoute'])
 			$scope.searchCriteria = "";
 			$('#groups_table_processing').hide();
 		});
+	}
+
+	$scope.saveGroup = function() {
+		if ($scope.newGroupForm.$valid) {
+			var group = JSON.stringify($scope.groupDialog.newGroup);
+			console.log(JSON.stringify(group));
+			groupsFactory.saveGroup(group)
+			.then(function(response) {
+				if(response.data.status == "200") {
+					alert("Grupa je sačuvana.");
+				} else {
+					alert(response.data.message);
+				}
+				$('#group_dialog').modal('hide');
+			}, function(error) {
+				handleErrorResponse(error.data);
+			}).finally(function(response) {
+				$scope.reset();
+			});
+		} else {
+			alert("Morate popuniti sva obavezna polja.");
+		}
+	}
+
+	$scope.resetGroupDialog = function() {
+		$scope.groupDialog.newGroup = {};
+		$scope.newGroupForm.$setPristine();
+		$scope.newGroupForm.$setUntouched();
 	}
 
 	function init() {
