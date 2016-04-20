@@ -4,6 +4,7 @@
 var eKlubApp = angular.module('eKlub', [
   'ngRoute',
   'eKlub.dashboard',
+  'eKlub.categories',
   'eKlub.members',
   'eKlub.groups',
   'eKlub.version'
