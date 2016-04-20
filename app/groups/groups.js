@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('eKlub.groups', ['ngRoute'])
+angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/groups', {
@@ -31,7 +31,7 @@ angular.module('eKlub.groups', ['ngRoute'])
 	return groupsFactory;
 })
 
-.controller('GroupsController', function($scope, groupsFactory) {
+.controller('GroupsController', function($scope, groupsFactory, categoriesFactory) {
 
 	var groupsTable;
 
@@ -47,6 +47,19 @@ angular.module('eKlub.groups', ['ngRoute'])
 		}).finally(function (response) {
 			$scope.searchCriteria = "";
 			$('#groups_table_processing').hide();
+		});
+	}
+
+	$scope.createNewGroup = function() {
+		categoriesFactory.getAllCategories()
+		.then(function(response) {
+			$scope.categories = response.data.payload;
+			$scope.groupDialog = { newGroup: {}};
+			$scope.groupDialog.newGroup.category = response.data.payload[0];
+		}, function(error) {
+			handleErrorResponse(error.data);
+		}).finally(function (response) {
+			
 		});
 	}
 
