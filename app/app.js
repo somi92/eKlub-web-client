@@ -7,6 +7,7 @@ var eKlubApp = angular.module('eKlub', [
   'eKlub.categories',
   'eKlub.members',
   'eKlub.groups',
+  'eKlub.trainings',
   'eKlub.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
