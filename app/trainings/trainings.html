@@ -11,12 +11,20 @@
 				<div class="input-group">
 				    <input type="text" class="form-control" ng-model="searchCriteria" placeholder="Unesite kriterijum pretrage"></input>
 					<span class="input-group-btn">
-						<button class="btn btn-info" ng-click="" title="Pretraži"><i class="fa fa-search"></i></button>
+						<button class="btn btn-info" ng-click="searchTrainings()" title="Pretraži"><i class="fa fa-search"></i></button>
 				    </span>
 				</div>
 			</div>
 			<button class="btn btn-info search_button" ng-click="reset();" title="Poništi pretragu i filter"><i class="fa fa-refresh"></i></button>
-				
+			<div class="btn-group search_button">
+			  <button type="button" class="btn btn-info dropdown-toggle" title="Filtriraj po grupi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			    <i class="fa fa-users">&nbsp;</i><span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu">
+			  	<li ng-repeat="group in groups"><a style="cursor: pointer;" ng-click="filterTrainingsByGroup(group.id);">{{group.name}}</a></li>
+			  </ul>
+			</div>
+
 		</div>
 
 	</div>
@@ -31,6 +39,7 @@
 					<th>Datum i vreme</th>
 					<th>Trajanje (min)</th>
 					<th>Grupa</th>
+					<th></th>
 				</tr>
 			</thead>
 

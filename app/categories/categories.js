@@ -67,7 +67,6 @@ angular.module('eKlub.categories', ['ngRoute'])
 				language: languageSettings
 			});
 		} else {
-			console.log(categories);
 			categoriesTable.clear().draw();
 			categoriesTable.rows.add(categories);
    			categoriesTable.columns.adjust().draw();
