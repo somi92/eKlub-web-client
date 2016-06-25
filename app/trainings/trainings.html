@@ -5,24 +5,24 @@
 	<div class="row" style="height: 70px;">
 		
 		<div class="col-md-5">
-				
+
 			<div class="col-lg-6 search_field">
 
 				<div class="input-group">
-				    <input type="text" class="form-control" ng-model="searchCriteria" placeholder="Unesite kriterijum pretrage"></input>
+					<input type="text" class="form-control" ng-model="searchCriteria" placeholder="Unesite kriterijum pretrage"></input>
 					<span class="input-group-btn">
 						<button class="btn btn-info" ng-click="searchTrainings()" title="Pretraži"><i class="fa fa-search"></i></button>
-				    </span>
+					</span>
 				</div>
 			</div>
 			<button class="btn btn-info search_button" ng-click="reset();" title="Poništi pretragu i filter"><i class="fa fa-refresh"></i></button>
 			<div class="btn-group search_button">
-			  <button type="button" class="btn btn-info dropdown-toggle" title="Filtriraj po grupi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			    <i class="fa fa-users">&nbsp;</i><span class="caret"></span>
-			  </button>
-			  <ul class="dropdown-menu">
-			  	<li ng-repeat="group in groups"><a style="cursor: pointer;" ng-click="filterTrainingsByGroup(group.id);">{{group.name}}</a></li>
-			  </ul>
+				<button type="button" class="btn btn-info dropdown-toggle" title="Filtriraj po grupi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fa fa-users">&nbsp;</i><span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li ng-repeat="group in groups"><a style="cursor: pointer;" ng-click="filterTrainingsByGroup(group.id);">{{group.name}}</a></li>
+				</ul>
 			</div>
 
 		</div>
@@ -39,12 +39,111 @@
 					<th>Datum i vreme</th>
 					<th>Trajanje (min)</th>
 					<th>Grupa</th>
-					<th></th>
+					<th>Opcije</th>
 				</tr>
 			</thead>
 
 		</table>
 
 	</div>
+
+
+	<div id="training_details_dialog" class="modal fade" role="dialog" data-backdrop="static">
+		<div class="modal-dialog" style="width: 80%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Detalji o treningu</h4>
+				</div>
+				<div class="modal-body">
+
+					<div class="container" style="width: 100%;">
+
+						<div class="col-lg-5">
+
+							<div class="panel panel-default">
+
+								<div class="panel-heading">
+									<h4 class="panel-title">Opšti podaci</h4>
+								</div>
+
+								<div class="panel-body">
+
+									<div class="row dialog_row form-group">
+										<div class="col-md-4">Datum/vreme:</div>
+										<div class="col-md-8">
+											<input type="text" name="dateTime" class="form-control" ng-model="trainingDialog.training.dateTime" />
+										</div>
+									</div>
+
+									<div class="row dialog_row form-group">
+										<div class="col-md-4">Trajanje (min):</div>
+										<div class="col-md-8">
+											<input type="text" name="dateTime" class="form-control" ng-model="trainingDialog.training.durationMinutes" />
+										</div>
+									</div>
+
+									<div class="row dialog_row form-group">
+										<div class="col-md-4">Grupa:</div>
+										<div class="col-md-8">
+											<input type="text" name="dateTime" class="form-control" ng-model="trainingDialog.training.group.name" />
+										</div>
+									</div>
+
+									<div class="row dialog_row">
+										<div class="col-md-4">Opis:</div>
+										<div class="col-md-8">
+											<textarea type="text" class="form-control" style="height: 200px;" ng-model="trainingDialog.training.description"></textarea> 
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="col-lg-7">
+
+							<div class="panel panel-default">
+
+								<div class="panel-heading">
+									<h4 class="panel-title">Prisustva</h4>
+								</div>
+
+								<div class="panel-body">
+									<div style="padding: 3% 1% 3% 1%;">
+
+										<table id="attendances_table" class="table table-striped table-bordered table-hover" cellspacing="0">
+
+											<thead>
+												<tr>
+													<th>Id</th>
+													<th>Broj LK</th>
+													<th>Ime i prezime</th>
+													<th>Prisustvo</th>
+													<th>Kašnjenje (min)</th>
+												</tr>
+											</thead>
+
+										</table>
+
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button ng-click="" type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 </div>
