@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
+angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/members', {
@@ -70,10 +70,11 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 	return membersFactory;
 })
 
-.controller('MembersController', function($scope, membersFactory, groupsFactory) {
+.controller('MembersController', function($scope, membersFactory, groupsFactory, feesFactory) {
 
 	var table;
 	var paymentsTable;
+	var payments;
 	var attendanceTable;
 
 	init();
@@ -145,7 +146,8 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 			.then(function(response){
 				$scope.memberDialog = { editMember: {}};
 				$scope.memberDialog.editMember = response.data.payload;
-				initializePaymentsTable(response.data.payload.payments);
+				payments = response.data.payload.payments;
+				initializePaymentsTable(payments);
 				initializeAttendancesTable(response.data.payload.attendances);
 			}, function(error) {
 				handleErrorResponse(error.data);
@@ -218,6 +220,48 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 		}).finally(function(response) {
 			$scope.reset();
 		});
+	}
+
+	$scope.getPayment = function(id) {
+		feesFactory.getAllMembershipFees()
+		.then(function(response){
+			response.data.payload.forEach(function(item) {
+				item["display"] = item.dateFrom + " - " + item.dateTo;
+			});
+			$scope.fees = response.data.payload;
+			$scope.paymentDialog = { payment: {}};
+			$scope.paymentDialog.payment = payments.filter(e => e.id == id)[0];
+		}, function(error) {
+			handleErrorResponse(error.data);
+		}).finally(function() {
+
+		});
+	}	
+
+	$scope.savePayment = function() {
+		// if($scope.paymentDialog.$valid) {
+		// 	var payment = $scope.paymentDialog.payment;
+		// 	console.log(JSON.stringify(payment));
+		// } else {
+		// 	console.log("addPayment not valid");
+		// }
+		var payment = $scope.paymentDialog.payment;
+		payment["memberId"] = $scope.memberDialog.editMember.id;
+		console.log(JSON.stringify(payment));
+		feesFactory.savePayment(payment)
+			.then(function(response) {
+				if(response.data.status == "200") {
+					alert("Uplata je sačuvana.");
+				} else {
+					alert(response.data.message);
+				}
+				$('#payment_dialog').modal('hide');
+				$scope.getMemberById($scope.memberDialog.editMember.id);
+			}, function(error) {
+				handleErrorResponse(error.data);
+			}).finally(function(response) {
+
+			});
 	}
 
 	$scope.setUpMemberForDeletion = function(memberId, memberName) {
@@ -303,7 +347,10 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups'])
 				{"data":"fee.dateFrom"},
 				{"data":"fee.dateTo"},
 				{"data":"amount"},
-				{"data":"dateOfPayment"}],
+				{"data":"dateOfPayment"},
+				{"data":null, "render": function(data, type, row) {
+					return '<button data-toggle="modal" data-target="#payment_dialog" class="btn btn-default" onclick=\"angular.element(this).scope().getPayment(' + data.id + ')\" style="margin-right: 5%;"><i class="fa fa-folder-open fa-fw"></i></button>';
+				}}],
 
 				language: languageSettings
 			});

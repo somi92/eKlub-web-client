@@ -307,6 +307,7 @@
 														<th>Do</th>
 														<th>Iznos</th>
 														<th>Datum uplate</th>
+														<th>Opcije</th>
 													</tr>
 												</thead>
 
@@ -376,6 +377,54 @@
 		  </div>
 		</div>
 
+		<div id="payment_dialog" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+		        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        		<h4 class="modal-title">Uplata članarine</h4>
+		      		</div>
+		      		<div class="modal-body">
+
+		      			<form name="paymentForm" novalidate>
+		      				
+		      				<div class="row dialog_row">
+			      				<div class="col-md-4">Članarina:</div>
+			      				<div class="col-md-8">
+			      					<select required name="feesSelection" id="feesSelection" class="form-control" 
+			      						ng-options="fee as fee.display for fee in fees track by fee.id"
+			      						ng-model="paymentDialog.payment.fee">
+			      					</select>
+			      				</div>
+							</div>
+
+							<div class="row dialog_row form-group">
+								<div class="col-md-4">Iznos:</div>
+								<div class="col-md-8">
+									<input type="number" name="amount" class="form-control" ng-model="paymentDialog.payment.amount" min="1" max="1000000000" required />
+									<p ng-show="paymentForm.amount.$error.required || paymentForm.amount.$error.number" class="help-block">Iznos je obavezan</p>
+								</div>
+							</div>
+
+							<div class="row dialog_row form-group" ng-class="{ 'has-error' : paymentForm.dateOfPayment.$invalid && !paymentForm.dateOfPayment.$pristine }">
+				      			<div class="col-md-4">Datum uplate:</div>
+				      			<div class="col-md-8">
+				      				<input type="text" datepicker name="dateOfPayment" class="form-control" ng-model="paymentDialog.payment.dateOfPayment" required />
+				      				<p ng-show="paymentForm.dateOfPayment.$invalid && !paymentForm.dateOfPayment.$pristine" class="help-block">Datum uplate je obavezan</p>
+				      			</div>
+				      		</div>
+
+
+		      			</form>
+
+		      		</div>
+		      		<div class="modal-footer">
+		      			<button ng-click="" type="button" style="float: right;" class="btn btn-default" data-dismiss="modal">Zatvori</button>
+		      			<button ng-click="savePayment()" style="float: right; margin-right: 1em;" type="button" class="btn btn-primary" ng-disabled="paymentForm.$invalid">Sačuvaj</button>
+		      		</div>
+				</div>
+			</div>
+		</div>
 		
 
 	<div>
