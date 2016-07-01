@@ -298,6 +298,7 @@
 
 							  			<div style="padding: 3% 1% 3% 1%;">
 							  				
+							  				<button data-toggle="modal" data-target="#payment_dialog" ng-click="resetPaymentDialog();" class="btn btn-success" style="margin-right: 1%; float: right;"><i class="fa fa-plus fa-fw"></i></button>
 							  				<table id="payments_table" class="table table-striped table-bordered table-hover" cellspacing="0">
 			
 												<thead>
@@ -398,7 +399,7 @@
 			      				</div>
 							</div>
 
-							<div class="row dialog_row form-group">
+							<div class="row dialog_row form-group" ng-class="{ 'has-error' : paymentForm.amount.$invalid && !paymentForm.amount.$pristine }">
 								<div class="col-md-4">Iznos:</div>
 								<div class="col-md-8">
 									<input type="number" name="amount" class="form-control" ng-model="paymentDialog.payment.amount" min="1" max="1000000000" required />
@@ -409,7 +410,7 @@
 							<div class="row dialog_row form-group" ng-class="{ 'has-error' : paymentForm.dateOfPayment.$invalid && !paymentForm.dateOfPayment.$pristine }">
 				      			<div class="col-md-4">Datum uplate:</div>
 				      			<div class="col-md-8">
-				      				<input type="text" datepicker name="dateOfPayment" class="form-control" ng-model="paymentDialog.payment.dateOfPayment" required />
+				      				<input id="dateOfPayment_input" type="text" datepicker name="dateOfPayment" class="form-control" ng-model="paymentDialog.payment.dateOfPayment" required />
 				      				<p ng-show="paymentForm.dateOfPayment.$invalid && !paymentForm.dateOfPayment.$pristine" class="help-block">Datum uplate je obavezan</p>
 				      			</div>
 				      		</div>
