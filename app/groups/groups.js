@@ -70,13 +70,14 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 			groupsFactory.saveGroup(group)
 			.then(function(response) {
 				if(response.data.status == "200") {
-					alert("Grupa je sačuvana.");
+					alert("Sistem je uspešno zapamtio novu grupu");
 				} else {
 					alert(response.data.message);
 				}
 				$('#group_dialog').modal('hide');
 			}, function(error) {
-				handleErrorResponse(error.data);
+				notifyError("Sistem ne može da zapamti novu grupu");
+				// handleErrorResponse(error.data);
 			}).finally(function(response) {
 				$scope.reset();
 			});
@@ -163,6 +164,42 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 		}
 		console.log(errorContainer);
 		alert(message);
+	}
+
+	function notifyInfo(message) {
+		$.notify({
+			message: message,
+			icon: "fa fa-info-circle"
+		},
+		{
+			type: 'info',
+			delay: 20000,
+			z_index: 10000,
+			placement: {
+				align: 'center'
+			},
+			offset: {
+				y: 45
+			}
+		});
+	}
+
+	function notifyError(message) {
+		$.notify({
+			message: message,
+			icon: "fa fa-exclamation-triangle"
+		},
+		{
+			type: 'danger',
+			delay: 20000,
+			z_index: 10000,
+			placement: {
+				align: 'center'
+			},
+			offset: {
+				y: 45
+			}
+		});
 	}
 
 });

@@ -105,7 +105,8 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 			trainingsTable.rows.add(response.data.payload);
 			trainingsTable.columns.adjust().draw();
 		}, function(error) {
-			handleErrorResponse(error.data);
+			notifyError("Sistem ne može da pronađe treninge po zadatim vrednostima");
+			// handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#trainings_table_processing').hide();
 		});
@@ -119,7 +120,8 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 			trainingsTable.rows.add(response.data.payload);
 			trainingsTable.columns.adjust().draw();
 		}, function(error) {
-			handleErrorResponse(error.data);
+			notifyError("Sistem ne može da pronađe treninge po zadatim vrednostima");
+			// handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#trainings_table_processing').hide();
 		});
@@ -132,7 +134,8 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 			$scope.trainingDialog.training = response.data.payload;
 			initializeAttendancesTable(response.data.payload.attendances);
 		}, function(error) {
-			handleErrorResponse(error.data);
+			notifyError("Sistem ne može da prikaže podatke o izabranom treningu");
+			// handleErrorResponse(error.data);
 		}).finally(function(response) {
 
 		});
@@ -231,6 +234,42 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 		}
 		console.log(errorContainer);
 		alert(message);
+	}
+
+	function notifyInfo(message) {
+		$.notify({
+			message: message,
+			icon: "fa fa-info-circle"
+		},
+		{
+			type: 'info',
+			delay: 20000,
+			z_index: 10000,
+			placement: {
+				align: 'center'
+			},
+			offset: {
+				y: 45
+			}
+		});
+	}
+
+	function notifyError(message) {
+		$.notify({
+			message: message,
+			icon: "fa fa-exclamation-triangle"
+		},
+		{
+			type: 'danger',
+			delay: 20000,
+			z_index: 10000,
+			placement: {
+				align: 'center'
+			},
+			offset: {
+				y: 45
+			}
+		});
 	}
 
 });
