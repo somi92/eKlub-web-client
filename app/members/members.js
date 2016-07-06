@@ -133,7 +133,9 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			$scope.memberDialog.newMember.group = response.data.payload[0];
 			$scope.memberDialog.newMember.gender = 'M';
 		}, function(error) {
-			handleErrorResponse(error.data);
+			notifyError("Sistem ne može da prikaže ekran za kreiranje novog člana");
+			$("#member_dialog").modal('hide');
+			// handleErrorResponse(error.data);
 		}).finally(function (response) {
 			
 		});

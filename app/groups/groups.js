@@ -57,7 +57,9 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 			$scope.groupDialog = { newGroup: {}};
 			$scope.groupDialog.newGroup.category = response.data.payload[0];
 		}, function(error) {
-			handleErrorResponse(error.data);
+			notifyError("Sistem ne može da prikaže ekran za kreiranje nove grupe");
+			$("#group_dialog").modal('hide');
+			// handleErrorResponse(error.data);
 		}).finally(function (response) {
 			
 		});
@@ -70,9 +72,9 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 			groupsFactory.saveGroup(group)
 			.then(function(response) {
 				if(response.data.status == "200") {
-					alert("Sistem je uspešno zapamtio novu grupu");
+					notifyInfo("Sistem je uspešno zapamtio novu grupu");
 				} else {
-					alert(response.data.message);
+					notifyInfo(response.data.message);
 				}
 				$('#group_dialog').modal('hide');
 			}, function(error) {
