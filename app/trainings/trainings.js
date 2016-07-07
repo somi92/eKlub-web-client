@@ -27,7 +27,8 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 	trainingsFactory.getTrainings = function(searchCriteria) {
 		var data = {
 			"dateTime": searchCriteria,
-			"durationMinutes": searchCriteria
+			"durationMinutes": searchCriteria,
+			"description": searchCriteria
 		};
 		return $http({
 			url: getTrainingsUrl,
@@ -154,6 +155,7 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 				{"data":"dateTime"},
 				{"data":"durationMinutes"},
 				{ "data": "group.name", "defaultContent": "" },
+				{ "data": "description" },
 				{ "data": null, "render":function(data, type, row) {
 					return '<button data-toggle="modal" data-target="#training_details_dialog" class="btn btn-default" onclick=\"angular.element(this).scope().getTrainingById(\'' + data.id + '\')\" style="margin-right: 10%;"><i class="fa fa-folder-open fa-fw"></i></button>';
 				}}],

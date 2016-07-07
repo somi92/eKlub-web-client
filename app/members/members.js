@@ -218,7 +218,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 		membersFactory.deleteMemberById(memberId)
 		.then(function(response) {
 			if(response.data.status == "200") {
-				notifyInfo("Član je obrisan.");
+				notifyInfo("Sistem je uspešno izbrisao člana");
 			} else {
 				notifyInfo(response.data.message);
 			}
@@ -279,7 +279,9 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			$scope.paymentDialog.payment.dateOfPayment = new Date().toJSON().slice(0,10);
 			$scope.paymentDialog.payment.fee = response.data.payload[0];
 		}, function(error) {
-			handleErrorResponse(error.data);
+			$("#payment_dialog").modal('hide');
+			notifyError("Sistem ne može da prikaže ekran za evidentiranje nove uplate članarine");
+			// handleErrorResponse(error.data);
 		}).finally(function() {
 			
 		});
