@@ -57,8 +57,8 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 			$scope.groupDialog = { newGroup: {}};
 			$scope.groupDialog.newGroup.category = response.data.payload[0];
 		}, function(error) {
-			notifyError("Sistem ne može da prikaže ekran za kreiranje nove grupe");
 			$("#group_dialog").modal('hide');
+			notifyError("Sistem ne može da prikaže ekran za kreiranje nove grupe");
 			// handleErrorResponse(error.data);
 		}).finally(function (response) {
 			

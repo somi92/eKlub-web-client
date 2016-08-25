@@ -135,6 +135,7 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 			$scope.trainingDialog.training = response.data.payload;
 			initializeAttendancesTable(response.data.payload.attendances);
 		}, function(error) {
+			$("#training_details_dialog").modal('hide');
 			notifyError("Sistem ne može da prikaže podatke o izabranom treningu");
 			// handleErrorResponse(error.data);
 		}).finally(function(response) {
