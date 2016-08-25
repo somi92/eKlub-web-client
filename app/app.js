@@ -16,12 +16,12 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/dashboard'});
 
   $routeProvider
-    .when('/access_token=:accessToken', {
-      template: '',
-      controller: function ($location, AccessToken) {
-        var hash = $location.path().substr(1);
-        AccessToken.setTokenFromString(hash);
-        $location.path('/dashboard');
+  .when('/access_token=:accessToken', {
+    template: '',
+    controller: function ($location, AccessToken) {
+      var hash = $location.path().substr(1);
+      AccessToken.setTokenFromString(hash);
+      $location.path('/dashboard');
         // $location.replace();
       }
     });
@@ -85,4 +85,34 @@ eKlubApp.directive('showtab', function() {
       });
     }
   };
+});
+
+eKlubApp.service('AuthService', function($rootScope, $http, AccessToken) {
+
+  // this.accessToken = null;
+
+  this.init = function() {
+    console.log("init");
+    $rootScope.$on('oauth:login', function(event, token) {
+      console.log('yo');
+      console.log(token.access_token);
+      $rootScope.accessToken = token.access_token;
+    });
+    $rootScope.$on('oauth:logout', function(event) {
+      console.log("logout " + $rootScope.accessToken);
+      $http.get("http://localhost:8081/logout", { headers: { "Authorization" : "Bearer " + $rootScope.accessToken } });
+      $rootScope.accessToken = null;
+    });
+  }
+
+  this.getAccessToken = function() {
+    return $rootScope.accessToken;
+  }
+
+  this.setAccessToken = function(token) {
+    console.log("setAccessToken");
+    console.log(token)
+    $rootScope.accessToken = token;
+  }
+
 });

@@ -10,24 +10,19 @@ angular.module('eKlub.categories', ['ngRoute'])
 }])
 .factory('categoriesFactory', function($http, AccessToken) {
 
-	// $http.defaults.headers.common.Authorization = "Bearer " + AccessToken.get().access_token;
-	// $http.defaults.headers.post.Authorization = "Bearer " + AccessToken.get().access_token;
+	$http.defaults.headers.common.Authorization = "Bearer " + AccessToken.get().access_token;
 
 	var getAllCategoriesUrl = "http://localhost:8080/categories";
 	
 	var categoriesFactory = {};
 
 	categoriesFactory.getAllCategories = function() {
-		$http.defaults.headers.common.Authorization = "Bearer " + AccessToken.get().access_token;
-		console.log($http.defaults.headers.common.Authorization);
 		return $http.get(getAllCategoriesUrl);
 	}
 
 	return categoriesFactory;
 })
-.controller('CategoriesController', function($scope, categoriesFactory, AccessToken) {
-
-	console.log(AccessToken.get());
+.controller('CategoriesController', function($scope, categoriesFactory) {
 
 	var categoriesTable;
 
