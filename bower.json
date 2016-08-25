@@ -13,6 +13,7 @@
     "html5-boilerplate": "~5.2.0",
     "datatables.net": "^1.10.11",
     "datatables.net-bs": "^1.10.11",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.37"
+    "eonasdan-bootstrap-datetimepicker": "^4.17.37",
+    "oauth-ng": "^0.4.10"
   }
 }
