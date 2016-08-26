@@ -9,7 +9,9 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 	});
 }])
 
-.factory('membersFactory', function($http) {
+.factory('membersFactory', function($http, AccessToken) {
+
+	$http.defaults.headers.common.Authorization = "Bearer " + (AccessToken.get() != null ? AccessToken.get().access_token : "");
 
 	var getAllMembersUrl = "http://localhost:8080/members";
 	var getMembersUrl = "http://localhost:8080/members/search";

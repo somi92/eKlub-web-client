@@ -87,9 +87,7 @@ eKlubApp.directive('showtab', function() {
   };
 });
 
-eKlubApp.service('AuthService', function($rootScope, $http, UtilService, AccessToken) {
-
-  // this.accessToken = null;
+eKlubApp.service('AuthService', function($rootScope, $window, $http, UtilService, AccessToken) {
 
   this.init = function() {
     console.log("init");
@@ -101,6 +99,7 @@ eKlubApp.service('AuthService', function($rootScope, $http, UtilService, AccessT
       console.log("logout " + $rootScope.accessToken);
       $http.get("http://localhost:8081/logout", { headers: { "Authorization" : "Bearer " + $rootScope.accessToken } });
       $rootScope.accessToken = null;
+      $window.location.href = "/app"
     });
     $rootScope.$on('oauth:profile', function(profile) {
       console.log('User profile data retrieved: ', profile);
@@ -115,9 +114,13 @@ eKlubApp.service('AuthService', function($rootScope, $http, UtilService, AccessT
     console.log("setAccessToken " + token);
     console.log(AccessToken.get());
     $rootScope.accessToken = token;
+    $rootScope.isLogged = !!AccessToken.get();
     var checkTokenUrl = "http://localhost:8081/oauth/check_token?token=" + token;
     $http.get(checkTokenUrl).then(function(response) {
       $rootScope.username = response.data.user_name;
+      $rootScope.isLogged = !!AccessToken.get();
+
+      $(".oauth").hide().fadeIn('fast');
     }, function(error) {
 
     }).finally(function (response) {

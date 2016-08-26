@@ -9,7 +9,9 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
   });
 }])
 
-.factory('groupsFactory', function($http){
+.factory('groupsFactory', function($http, AccessToken) {
+
+	$http.defaults.headers.common.Authorization = "Bearer " + (AccessToken.get() != null ? AccessToken.get().access_token : "");
 	
 	var getAllGroupsUrl = "http://localhost:8080/groups";
 	var saveMemberUrl = "http://localhost:8080/groups";

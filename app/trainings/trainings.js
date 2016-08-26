@@ -8,7 +8,9 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 		controller: 'TrainingsController'
 	});
 }])
-.factory('trainingsFactory', function($http){
+.factory('trainingsFactory', function($http, AccessToken) {
+
+	$http.defaults.headers.common.Authorization = "Bearer " + (AccessToken.get() != null ? AccessToken.get().access_token : "");
 
 	var getTrainingsUrl = "http://localhost:8080/trainings/search";
 	var getTrainingByIdUrl = "http://localhost:8080/trainings/id";
@@ -173,13 +175,13 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 	function initializeAttendancesTable(attendances) {
 		if(!$.fn.DataTable.isDataTable('#attendances_table')) {
 			attendanceTable = $('#attendances_table').DataTable({
-			data: attendances,
-			processing: true,
-			filter: false,
-			pageLength: 5,
-			lengthChange: false,
-			autoWidth: false,
-			columns: [
+				data: attendances,
+				processing: true,
+				filter: false,
+				pageLength: 5,
+				lengthChange: false,
+				autoWidth: false,
+				columns: [
 				{"data":"id"},
 				{"data":"member.idCard"},
 				{"data":"member.nameSurname"},
@@ -197,7 +199,7 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 			console.log(attendances);
 			attendanceTable.clear().draw();
 			attendanceTable.rows.add(attendances);
-   			attendanceTable.columns.adjust().draw();
+			attendanceTable.columns.adjust().draw();
 		}
 	}
 });

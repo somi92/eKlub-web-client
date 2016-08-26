@@ -9,7 +9,9 @@ angular.module('eKlub.fees', ['ngRoute'])
   });
 }])
 
-.factory('feesFactory', function($http) {
+.factory('feesFactory', function($http, AccessToken) {
+
+	$http.defaults.headers.common.Authorization = "Bearer " + (AccessToken.get() != null ? AccessToken.get().access_token : "");
 
 	var getAllMembershipFeesUrl = "http://localhost:8080/fees";
 	var savePaymentsUrl = "http://localhost:8080/payments"
