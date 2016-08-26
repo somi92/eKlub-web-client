@@ -70,7 +70,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 	return membersFactory;
 })
 
-.controller('MembersController', function($scope, membersFactory, groupsFactory, feesFactory) {
+.controller('MembersController', function($scope, UtilService, membersFactory, groupsFactory, feesFactory) {
 
 	var table;
 	var paymentsTable;
@@ -87,7 +87,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			table.rows.add(response.data.payload);
 			table.columns.adjust().draw();
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$scope.searchCriteria = "";
 			$('#members_table_processing').hide();
@@ -103,8 +103,8 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			table.rows.add(response.data.payload);
 			table.columns.adjust().draw();
 		}, function(error) {
-			notifyError("Sistem ne može da pronađe članove po zadatim vrednostima");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da pronađe članove po zadatim vrednostima");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#members_table_processing').hide();
 		});
@@ -118,8 +118,8 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			table.rows.add(response.data.payload);
 			table.columns.adjust().draw();
 		}, function(error) {
-			notifyError("Sistem ne može da pronađe članove po zadatim vrednostima");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da pronađe članove po zadatim vrednostima");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#members_table_processing').hide();
 		});
@@ -134,8 +134,8 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			$scope.memberDialog.newMember.gender = 'M';
 		}, function(error) {
 			$("#member_dialog").modal('hide');
-			notifyError("Sistem ne može da prikaže ekran za kreiranje novog člana");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da prikaže ekran za kreiranje novog člana");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			
 		});
@@ -154,15 +154,15 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 				initializePaymentsTable(payments);
 				initializeAttendancesTable(response.data.payload.attendances);
 			}, function(error) {
-				notifyError("Sistem ne može da prikaže podatke za izabranog člana");
-				// handleErrorResponse(error.data);
+				UtilService.notifyError("Sistem ne može da prikaže podatke za izabranog člana");
+				// UtilService.handleErrorResponse(error.data);
 			}).finally(function(response) {
 
 			});
 		}, function(error) {
 			$("#edit_member_dialog").modal('hide');
-			notifyError("Sistem ne može da prikaže podatke za izabranog člana");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da prikaže podatke za izabranog člana");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			
 		});
@@ -175,19 +175,19 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			membersFactory.saveMember(member)
 			.then(function(response) {
 				if(response.data.status == "200") {
-					notifyInfo("Sistem je uspešno zapamtio novog člana");
+					UtilService.notifyInfo("Sistem je uspešno zapamtio novog člana");
 				} else {
-					notifyInfo(response.data.message);
+					UtilService.notifyInfo(response.data.message);
 				}
 				$('#member_dialog').modal('hide');
 			}, function(error) {
-				notifyError("Sistem ne može da zapamti novog člana");
-				// handleErrorResponse(error.data);
+				UtilService.notifyError("Sistem ne može da zapamti novog člana");
+				// UtilService.handleErrorResponse(error.data);
 			}).finally(function(response) {
 				$scope.reset();
 			});
 		} else {
-			notifyInfo("Morate popuniti sva obavezna polja");
+			UtilService.notifyInfo("Morate popuniti sva obavezna polja");
 		}
 	}
 
@@ -198,19 +198,19 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			membersFactory.saveMember(member)
 			.then(function(response) {
 				if(response.data.status == "200") {
-					notifyInfo("Sistem je uspešno zapamtio izmene");
+					UtilService.notifyInfo("Sistem je uspešno zapamtio izmene");
 				} else {
-					notifyInfo(response.data.message);
+					UtilService.notifyInfo(response.data.message);
 				}
 				$('#edit_member_dialog').modal('hide');
 			}, function(error) {
-				notifyError("Sistem ne može da zapamti izmene člana");
-				// handleErrorResponse(error.data);
+				UtilService.notifyError("Sistem ne može da zapamti izmene člana");
+				// UtilService.handleErrorResponse(error.data);
 			}).finally(function(response) {
 				$scope.reset();
 			});
 		} else {
-			notifyInfo("Morate popuniti sva obavezna polja");
+			UtilService.notifyInfo("Morate popuniti sva obavezna polja");
 		}
 	}
 
@@ -219,14 +219,14 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 		membersFactory.deleteMemberById(memberId)
 		.then(function(response) {
 			if(response.data.status == "200") {
-				notifyInfo("Sistem je uspešno izbrisao člana");
+				UtilService.notifyInfo("Sistem je uspešno izbrisao člana");
 			} else {
-				notifyInfo(response.data.message);
+				UtilService.notifyInfo(response.data.message);
 			}
 			$('#delete_member_dialog').modal('hide');
 		}, function(error) {
-			notifyError("Sistem ne može da obriše izabranog člana");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da obriše izabranog člana");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function(response) {
 			$scope.reset();
 		});
@@ -242,7 +242,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			$scope.paymentDialog = { payment: {}};
 			$scope.paymentDialog.payment = payments.filter(e => e.id == id)[0];
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function() {
 
 		});
@@ -255,15 +255,15 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 		feesFactory.savePayment(payment)
 		.then(function(response) {
 			if(response.data.status == "200") {
-				notifyInfo("Sistem je uspešno zapamtio novu uplatu članarine");
+				UtilService.notifyInfo("Sistem je uspešno zapamtio novu uplatu članarine");
 			} else {
-				notifyInfo(response.data.message);
+				UtilService.notifyInfo(response.data.message);
 			}
 			$('#payment_dialog').modal('hide');
 			$scope.getMemberById($scope.memberDialog.editMember.id);
 		}, function(error) {
-			notifyError("Sistem ne može da zapamti novu uplatu članarine");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da zapamti novu uplatu članarine");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function(response) {
 
 		});
@@ -281,8 +281,8 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			$scope.paymentDialog.payment.fee = response.data.payload[0];
 		}, function(error) {
 			$("#payment_dialog").modal('hide');
-			notifyError("Sistem ne može da prikaže ekran za evidentiranje nove uplate članarine");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da prikaže ekran za evidentiranje nove uplate članarine");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function() {
 			
 		});
@@ -314,7 +314,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 		.then(function(response) {
 			$scope.groups = response.data.payload;
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 
 		});
@@ -323,7 +323,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 		.then(function(response) {
 			initializeMembersDataTable(response.data.payload);
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#members_table_processing').hide();
 		});
@@ -352,7 +352,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 				+ '<button onclick="angular.element(this).scope().setUpMemberForDeletion(' + data.id + ', \'' + data.nameSurname + '\')" class="btn btn-default" data-toggle="modal" data-target="#delete_member_dialog"><i class="fa fa-times fa-fw" style="color:red;"></i></button>';
 			}}],
 
-			language: languageSettings
+			language: UtilService.getTableLanguageSettings()
 		});
 	}
 
@@ -376,7 +376,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 					return '<button data-toggle="modal" data-target="#payment_dialog" class="btn btn-default" onclick=\"angular.element(this).scope().getPayment(' + data.id + ')\" style="margin-right: 5%;"><i class="fa fa-folder-open fa-fw"></i></button>';
 				}}],
 
-				language: languageSettings
+				language: UtilService.getTableLanguageSettings()
 			});
 		} else {
 			console.log(payments);
@@ -407,7 +407,7 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 				}},
 				{"data":"lateMin"}],
 
-				language: languageSettings
+				language: UtilService.getTableLanguageSettings()
 			});
 		} else {
 			console.log(attendances);
@@ -416,79 +416,4 @@ angular.module('eKlub.members', ['ngRoute', 'eKlub.groups', 'eKlub.fees'])
 			attendanceTable.columns.adjust().draw();
 		}
 	}
-
-	var languageSettings = {
-		"sProcessing": "Procesiranje u toku...",
-		"sLengthMenu": "Prikaži _MENU_ elemenata",
-		"sZeroRecords": "Nije pronađen nijedan rezultat",
-		"sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
-		"sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
-		"sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
-		"sInfoPostFix":  "",
-		"sSearch": "Pretraga:",
-		"sUrl": "",
-		"oPaginate": {
-			"sFirst":    "Početna",
-			"sPrevious": "Prethodna",
-			"sNext":     "Sledeća",
-			"sLast":     "Poslednja"
-		}
-	};
-
-	function handleErrorResponse(errorContainer) {
-		var message = "";
-		var status = errorContainer.status;
-		switch(status) {
-			case "400":
-			message = "Greška. Zahtev je nije validan.";
-			break;
-			case "404":
-			message = "Sistem nije pronašao resurse koje tražite.";
-			break;
-			case "500":
-			message = "Greška na serveru.";
-			break;
-			default:
-			message = errorContainer.message;
-		}
-		console.log(errorContainer);
-		notifyError(message);
-	}
-
-	function notifyInfo(message) {
-		$.notify({
-			message: message,
-			icon: "fa fa-info-circle"
-		},
-		{
-			type: 'info',
-			delay: 20000,
-			z_index: 10000,
-			placement: {
-				align: 'center'
-			},
-			offset: {
-				y: 45
-			}
-		});
-	}
-
-	function notifyError(message) {
-		$.notify({
-			message: message,
-			icon: "fa fa-exclamation-triangle"
-		},
-		{
-			type: 'danger',
-			delay: 20000,
-			z_index: 10000,
-			placement: {
-				align: 'center'
-			},
-			offset: {
-				y: 45
-			}
-		});
-	}
-
 });

@@ -31,7 +31,7 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 	return groupsFactory;
 })
 
-.controller('GroupsController', function($scope, groupsFactory, categoriesFactory) {
+.controller('GroupsController', function($scope, UtilService, groupsFactory, categoriesFactory) {
 
 	var groupsTable;
 
@@ -43,7 +43,7 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 		.then(function(response) {
 			initializeGroupsTable(response.data.payload);
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$scope.searchCriteria = "";
 			$('#groups_table_processing').hide();
@@ -58,8 +58,8 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 			$scope.groupDialog.newGroup.category = response.data.payload[0];
 		}, function(error) {
 			$("#group_dialog").modal('hide');
-			notifyError("Sistem ne može da prikaže ekran za kreiranje nove grupe");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da prikaže ekran za kreiranje nove grupe");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			
 		});
@@ -72,14 +72,14 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 			groupsFactory.saveGroup(group)
 			.then(function(response) {
 				if(response.data.status == "200") {
-					notifyInfo("Sistem je uspešno zapamtio novu grupu");
+					UtilService.notifyInfo("Sistem je uspešno zapamtio novu grupu");
 				} else {
-					notifyInfo(response.data.message);
+					UtilService.notifyInfo(response.data.message);
 				}
 				$('#group_dialog').modal('hide');
 			}, function(error) {
-				notifyError("Sistem ne može da zapamti novu grupu");
-				// handleErrorResponse(error.data);
+				UtilService.notifyError("Sistem ne može da zapamti novu grupu");
+				// UtilService.handleErrorResponse(error.data);
 			}).finally(function(response) {
 				$scope.reset();
 			});
@@ -100,7 +100,7 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 		.then(function(response) {
 			initializeGroupsTable(response.data.payload);
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#groups_table_processing').hide();
 		});
@@ -120,7 +120,7 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
 				{"data":"category.name"},
 				{"data":"remark"}],
 
-				language: languageSettings
+				language: UtilService.getTableLanguageSettings()
 			});
 		} else {
 			console.log(groups);
@@ -129,79 +129,4 @@ angular.module('eKlub.groups', ['ngRoute', 'eKlub.categories'])
    			groupsTable.columns.adjust().draw();
 		}
 	}
-
-	var languageSettings = {
-		"sProcessing": "Procesiranje u toku...",
-		"sLengthMenu": "Prikaži _MENU_ elemenata",
-		"sZeroRecords": "Nije pronađen nijedan rezultat",
-		"sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
-		"sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
-	    "sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
-		"sInfoPostFix":  "",
-		"sSearch": "Pretraga:",
-		"sUrl": "",
-		"oPaginate": {
-		    "sFirst":    "Početna",
-		    "sPrevious": "Prethodna",
-		    "sNext":     "Sledeća",
-		    "sLast":     "Poslednja"
-		}
-	};
-
-	function handleErrorResponse(errorContainer) {
-		var message = "";
-		var status = errorContainer.status;
-		switch(status) {
-			case "400":
-				message = "Greška. Zahtev je nije validan.";
-				break;
-			case "404":
-				message = "Sistem nije pronašao resurse koje tražite.";
-				break;
-			case "500":
-				message = "Greška na serveru.";
-				break;
-			default:
-				message = errorContainer.message;
-		}
-		console.log(errorContainer);
-		alert(message);
-	}
-
-	function notifyInfo(message) {
-		$.notify({
-			message: message,
-			icon: "fa fa-info-circle"
-		},
-		{
-			type: 'info',
-			delay: 20000,
-			z_index: 10000,
-			placement: {
-				align: 'center'
-			},
-			offset: {
-				y: 45
-			}
-		});
-	}
-
-	function notifyError(message) {
-		$.notify({
-			message: message,
-			icon: "fa fa-exclamation-triangle"
-		},
-		{
-			type: 'danger',
-			delay: 20000,
-			z_index: 10000,
-			placement: {
-				align: 'center'
-			},
-			offset: {
-				y: 45
-			}
-		});
-	}
-
 });

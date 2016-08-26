@@ -10,7 +10,7 @@ angular.module('eKlub.categories', ['ngRoute'])
 }])
 .factory('categoriesFactory', function($http, AccessToken) {
 
-	$http.defaults.headers.common.Authorization = "Bearer " + AccessToken.get().access_token;
+	$http.defaults.headers.common.Authorization = "Bearer " + (AccessToken.get() != null ? AccessToken.get().access_token : "");
 
 	var getAllCategoriesUrl = "http://localhost:8080/categories";
 	
@@ -22,7 +22,7 @@ angular.module('eKlub.categories', ['ngRoute'])
 
 	return categoriesFactory;
 })
-.controller('CategoriesController', function($scope, categoriesFactory) {
+.controller('CategoriesController', function($scope, UtilService, categoriesFactory) {
 
 	var categoriesTable;
 
@@ -34,7 +34,7 @@ angular.module('eKlub.categories', ['ngRoute'])
 		.then(function(response) {
 			initializeCategoriesTable(response.data.payload);
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$scope.searchCriteria = "";
 			$('#categories_table_processing').hide();
@@ -47,7 +47,7 @@ angular.module('eKlub.categories', ['ngRoute'])
 		.then(function(response) {
 			initializeCategoriesTable(response.data.payload);
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#categories_table_processing').hide();
 		});
@@ -66,7 +66,7 @@ angular.module('eKlub.categories', ['ngRoute'])
 				{"data":"name"},
 				{"data":"remark"}],
 
-				language: languageSettings
+				language: UtilService.getTableLanguageSettings()
 			});
 		} else {
 			categoriesTable.clear().draw();
@@ -74,43 +74,4 @@ angular.module('eKlub.categories', ['ngRoute'])
    			categoriesTable.columns.adjust().draw();
 		}
 	}
-
-	var languageSettings = {
-		"sProcessing": "Procesiranje u toku...",
-		"sLengthMenu": "Prikaži _MENU_ elemenata",
-		"sZeroRecords": "Nije pronađen nijedan rezultat",
-		"sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
-		"sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
-	    "sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
-		"sInfoPostFix":  "",
-		"sSearch": "Pretraga:",
-		"sUrl": "",
-		"oPaginate": {
-		    "sFirst":    "Početna",
-		    "sPrevious": "Prethodna",
-		    "sNext":     "Sledeća",
-		    "sLast":     "Poslednja"
-		}
-	};
-
-	function handleErrorResponse(errorContainer) {
-		var message = "";
-		var status = errorContainer.status;
-		switch(status) {
-			case "400":
-				message = "Greška. Zahtev je nije validan.";
-				break;
-			case "404":
-				message = "Sistem nije pronašao resurse koje tražite.";
-				break;
-			case "500":
-				message = "Greška na serveru.";
-				break;
-			default:
-				message = errorContainer.message;
-		}
-		console.log(errorContainer);
-		alert(message);
-	}
-
 });

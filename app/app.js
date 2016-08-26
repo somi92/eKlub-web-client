@@ -115,4 +115,92 @@ eKlubApp.service('AuthService', function($rootScope, $http, AccessToken) {
     $rootScope.accessToken = token;
   }
 
+  this.init();
+
+});
+
+eKlubApp.service('UtilService', function($location) {
+
+  this.handleErrorResponse = function(errorContainer) {
+    var message = "";
+    if(errorContainer == null) {
+      $location.path('/app');
+      $location.replace();
+      return;
+    }
+    var status = errorContainer.status;
+    switch(status) {
+      case "400":
+      message = "Greška. Zahtev je nije validan.";
+      break;
+      case "404":
+      message = "Sistem nije pronašao resurse koje tražite.";
+      break;
+      case "500":
+      message = "Greška na serveru.";
+      break;
+      default:
+      message = errorContainer.message;
+    }
+    console.log(errorContainer);
+    alert(message);
+  }
+
+  this.notifyInfo = function(message) {
+    $.notify({
+      message: message,
+      icon: "fa fa-info-circle"
+    },
+    {
+      type: 'info',
+      delay: 20000,
+      z_index: 10000,
+      placement: {
+        align: 'center'
+      },
+      offset: {
+        y: 45
+      }
+    });
+  }
+
+  this.notifyError = function(message) {
+    $.notify({
+      message: message,
+      icon: "fa fa-exclamation-triangle"
+    },
+    {
+      type: 'danger',
+      delay: 20000,
+      z_index: 10000,
+      placement: {
+        align: 'center'
+      },
+      offset: {
+        y: 45
+      }
+    });
+  }
+
+  this.getTableLanguageSettings = function() {
+    var languageSettings = {
+      "sProcessing": "Procesiranje u toku...",
+      "sLengthMenu": "Prikaži _MENU_ elemenata",
+      "sZeroRecords": "Nije pronađen nijedan rezultat",
+      "sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
+      "sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
+      "sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
+      "sInfoPostFix":  "",
+      "sSearch": "Pretraga:",
+      "sUrl": "",
+      "oPaginate": {
+        "sFirst":    "Početna",
+        "sPrevious": "Prethodna",
+        "sNext":     "Sledeća",
+        "sLast":     "Poslednja"
+      }
+    };
+    return languageSettings;
+  }
+
 });

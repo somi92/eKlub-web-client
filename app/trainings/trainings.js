@@ -55,7 +55,7 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 
 	return trainingsFactory;
 })
-.controller('TrainingsController', function($scope, trainingsFactory, groupsFactory) {
+.controller('TrainingsController', function($scope, UtilService, trainingsFactory, groupsFactory) {
 
 	var trainingsTable;
 	var attendanceTable;
@@ -67,7 +67,7 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 		.then(function(response) {
 			$scope.groups = response.data.payload;
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 
 		});
@@ -76,7 +76,7 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 		.then(function(response) {
 			initializeTrainingsTable(response.data.payload);
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#trainings_table_processing').hide();
 		});
@@ -90,7 +90,7 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 			trainingsTable.rows.add(response.data.payload);
 			trainingsTable.columns.adjust().draw();
 		}, function(error) {
-			handleErrorResponse(error.data);
+			UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$scope.searchCriteria = "";
 			$('#trainings_table_processing').hide();
@@ -106,8 +106,8 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 			trainingsTable.rows.add(response.data.payload);
 			trainingsTable.columns.adjust().draw();
 		}, function(error) {
-			notifyError("Sistem ne može da pronađe treninge po zadatim vrednostima");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da pronađe treninge po zadatim vrednostima");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#trainings_table_processing').hide();
 		});
@@ -121,8 +121,8 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 			trainingsTable.rows.add(response.data.payload);
 			trainingsTable.columns.adjust().draw();
 		}, function(error) {
-			notifyError("Sistem ne može da pronađe treninge po zadatim vrednostima");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da pronađe treninge po zadatim vrednostima");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function (response) {
 			$('#trainings_table_processing').hide();
 		});
@@ -136,8 +136,8 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 			initializeAttendancesTable(response.data.payload.attendances);
 		}, function(error) {
 			$("#training_details_dialog").modal('hide');
-			notifyError("Sistem ne može da prikaže podatke o izabranom treningu");
-			// handleErrorResponse(error.data);
+			UtilService.notifyError("Sistem ne može da prikaže podatke o izabranom treningu");
+			// UtilService.handleErrorResponse(error.data);
 		}).finally(function(response) {
 
 		});
@@ -161,7 +161,7 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 					return '<button data-toggle="modal" data-target="#training_details_dialog" class="btn btn-default" onclick=\"angular.element(this).scope().getTrainingById(\'' + data.id + '\')\" style="margin-right: 10%;"><i class="fa fa-folder-open fa-fw"></i></button>';
 				}}],
 
-				language: languageSettings
+				language: UtilService.getTableLanguageSettings()
 			});
 		} else {
 			trainingsTable.clear().draw();
@@ -191,7 +191,7 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
 				}},
 				{"data":"lateMin"}],
 
-				language: languageSettings
+				language: UtilService.getTableLanguageSettings()
 			});
 		} else {
 			console.log(attendances);
@@ -200,79 +200,4 @@ angular.module('eKlub.trainings', ['ngRoute', 'eKlub.groups'])
    			attendanceTable.columns.adjust().draw();
 		}
 	}
-
-	var languageSettings = {
-		"sProcessing": "Procesiranje u toku...",
-		"sLengthMenu": "Prikaži _MENU_ elemenata",
-		"sZeroRecords": "Nije pronađen nijedan rezultat",
-		"sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
-		"sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
-		"sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
-		"sInfoPostFix":  "",
-		"sSearch": "Pretraga:",
-		"sUrl": "",
-		"oPaginate": {
-			"sFirst":    "Početna",
-			"sPrevious": "Prethodna",
-			"sNext":     "Sledeća",
-			"sLast":     "Poslednja"
-		}
-	};
-
-	function handleErrorResponse(errorContainer) {
-		var message = "";
-		var status = errorContainer.status;
-		switch(status) {
-			case "400":
-			message = "Greška. Zahtev je nije validan.";
-			break;
-			case "404":
-			message = "Sistem nije pronašao resurse koje tražite.";
-			break;
-			case "500":
-			message = "Greška na serveru.";
-			break;
-			default:
-			message = errorContainer.message;
-		}
-		console.log(errorContainer);
-		alert(message);
-	}
-
-	function notifyInfo(message) {
-		$.notify({
-			message: message,
-			icon: "fa fa-info-circle"
-		},
-		{
-			type: 'info',
-			delay: 20000,
-			z_index: 10000,
-			placement: {
-				align: 'center'
-			},
-			offset: {
-				y: 45
-			}
-		});
-	}
-
-	function notifyError(message) {
-		$.notify({
-			message: message,
-			icon: "fa fa-exclamation-triangle"
-		},
-		{
-			type: 'danger',
-			delay: 20000,
-			z_index: 10000,
-			placement: {
-				align: 'center'
-			},
-			offset: {
-				y: 45
-			}
-		});
-	}
-
 });
